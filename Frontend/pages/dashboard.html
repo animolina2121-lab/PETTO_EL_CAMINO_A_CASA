@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PETTO - Inicio</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Nuestros estilos -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <div class="logo-petto">🐾 PETTO</div>
+                <p>EL CAMINO A CASA</p>
+            </div>
+
+            <nav class="menu">
+
+                <a href="dashboard.html" class="menu-item activo">
+                    🏠 <span>Inicio</span>
+                </a>
+
+                <a href="mascotas.html" class="menu-item">
+                    🐕 <span>Mis mascotas</span>
+                </a>
+
+                <a href="extravio.html" class="menu-item">
+                    🚨 <span>Reportar extravío</span>
+                </a>
+
+                <a href="avistamiento.html" class="menu-item">
+                    📍 <span>Avistamientos</span>
+                </a>
+
+                <a href="mapa.html" class="menu-item">
+                    🗺️ <span>Mapa</span>
+                </a>
+
+                <a href="perfil.html" class="menu-item">
+                    👤 <span>Mi perfil</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+
+                <a href="login.html" class="menu-item cerrar-sesion">
+                    🚪 <span>Cerrar sesión</span>
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="contenido-dashboard">
+
+            <!-- ENCABEZADO -->
+            <header class="dashboard-header">
+
+                <div>
+                    <h1>¡Bienvenida a PETTO! 🐾</h1>
+                    <p>
+                        Ayudemos a que cada mascota encuentre
+                        <strong>el camino a casa.</strong>
+                    </p>
+                </div>
+
+                <div class="usuario-dashboard">
+                    👤
+                    <span>Mi cuenta</span>
+                </div>
+
+            </header>
+
+
+            <!-- TARJETAS PRINCIPALES -->
+            <section class="tarjetas-dashboard">
+
+                <!-- MIS MASCOTAS -->
+                <div class="tarjeta-dashboard tarjeta-azul">
+
+                    <div class="tarjeta-icono">
+                        🐕
+                    </div>
+
+                    <div>
+                        <h3>Mis mascotas</h3>
+                        <p>
+                            Registrá y administrá la información
+                            de tus mascotas.
+                        </p>
+
+                        <a href="mascotas.html" class="btn-dashboard">
+                            Ver mascotas
+                        </a>
+                    </div>
+
+                </div>
+
+
+                <!-- REPORTAR EXTRAVÍO -->
+                <div class="tarjeta-dashboard tarjeta-rosa">
+
+                    <div class="tarjeta-icono">
+                        🚨
+                    </div>
+
+                    <div>
+                        <h3>Reportar extravío</h3>
+                        <p>
+                            Informá si tu mascota se perdió para
+                            ayudar a encontrarla.
+                        </p>
+
+                        <a href="extravio.html" class="btn-dashboard">
+                            Reportar
+                        </a>
+                    </div>
+
+                </div>
+
+
+                <!-- MAPA -->
+                <div class="tarjeta-dashboard tarjeta-naranja">
+
+                    <div class="tarjeta-icono">
+                        🗺️
+                    </div>
+
+                    <div>
+                        <h3>Mapa</h3>
+                        <p>
+                            Consultá las ubicaciones de mascotas
+                            y avistamientos.
+                        </p>
+
+                        <a href="mapa.html" class="btn-dashboard">
+                            Ver mapa
+                        </a>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ACTIVIDAD RECIENTE -->
+            <section class="actividad">
+
+                <div class="titulo-seccion">
+
+                    <h2>Actividad reciente</h2>
+
+                    <span>🐾</span>
+
+                </div>
+
+                <div class="actividad-vacia">
+
+                    <div class="actividad-icono">
+                        📍
+                    </div>
+
+                    <h3>Todavía no hay actividad</h3>
+
+                    <p>
+                        Cuando registres una mascota, reportes un
+                        extravío o agregues un avistamiento,
+                        aparecerá aquí.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- MENSAJE -->
+            <section class="mensaje-petto">
+
+                <div>
+                    <span class="mensaje-icono">💙</span>
+                </div>
+
+                <div>
+                    <h3>Juntos podemos ayudar</h3>
+
+                    <p>
+                        Cada reporte y cada avistamiento puede
+                        acercar una mascota perdida a su familia.
+                    </p>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

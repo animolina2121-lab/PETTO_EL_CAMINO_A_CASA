@@ -1,0 +1,73 @@
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PETTO.API.Data;
+using PETTO.API.Models;
+
+namespace PETTO.API.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ReportesExtravioController : ControllerBase
+    {
+        private readonly PettoDbContext _context;
+
+        public ReportesExtravioController(PettoDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/ReportesExtravio
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ReporteExtravio>>>
+            ObtenerReportes()
+        {
+            var reportes = await _context.ReportesExtravio.ToListAsync();
+            return Ok(reportes);
+        }
+
+        // GET: api/ReportesExtravio/1
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ReporteExtravio>>
+            ObtenerReporte(int id)
+        {
+            var reporte = await _context.ReportesExtravio.FindAsync(id);
+
+            if (reporte == null)
+            {
+                return NotFound(new
+                {
+                    mensaje = "Reporte de extravío no encontrado."
+                });
+            }
+
+            return Ok(reporte);
+        }
+
+        // POST: api/ReportesExtravio
+        [HttpPost]
+        public async Task<ActionResult<ReporteExtravio>>
+            CrearReporte(ReporteExtravio reporte)
+        {
+            var mascotaExiste = await _context.Mascotas
+                .AnyAsync(m => m.IdMascota == reporte.IdMascota);
+
+            if (!mascotaExiste)
+            {
+                return BadRequest(new
+                {
+                    mensaje = "La mascota indicada no existe."
+                });
+            }
+
+            _context.ReportesExtravio.Add(reporte);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(ObtenerReporte),
+                new { id = reporte.IdReporte },
+                reporte
+            );
+        }
+    }
+}

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buscar mascotas - PETTO</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         BARRA LATERAL
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="petto-logo">🐾</div>
+
+            <h2>PETTO</h2>
+
+            <p>EL CAMINO A CASA</p>
+        </div>
+
+        <nav class="menu">
+
+            <a href="dashboard.html"class="menu-item">
+                🏠 <span>Inicio</span>
+            </a>
+
+            <a href="mascotas.html"class="menu-item">
+                🐾 <span>Mis mascotas</span>
+            </a>
+
+            <a href="extravio.html" class="menu-item">
+                🚨 <span>Reportar extravío</span>
+            </a>
+
+            <a href="buscar.html" class="menu-item activo">
+                🔎 <span>Buscar mascotas</span>
+            </a>
+
+            <a href="avistamiento.html"class="menu-item">
+                👀 <span>Avistamientos</span>
+            </a>
+
+            <a href="mapa.html" class="menu-item">
+                📍 <span>Mapa</span>
+            </a>
+
+            <a href="perfil.html"class="menu-item">
+                👤 <span>Mi perfil</span>
+            </a>
+
+            <a href="login.html">
+                🚪 <span>Cerrar sesión</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+
+    <main class="main-content">
+
+        <!-- Encabezado -->
+
+        <div class="page-header">
+
+            <div>
+                <h1>Buscar mascotas extraviadas 🔎</h1>
+
+                <p>
+                    Ayuda a encontrar una mascota buscando reportes
+                    cercanos a tu zona.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             BUSCADOR
+        ========================== -->
+
+        <section class="search-box">
+
+            <h3>Buscar un reporte</h3>
+
+            <form>
+
+                <div class="row g-3">
+
+                    <!-- Palabra clave -->
+
+                    <div class="col-md-6">
+
+                        <label for="buscar" class="form-label">
+                            Nombre o palabra clave
+                        </label>
+
+                        <input
+                            type="text"
+                            id="buscar"
+                            class="form-control"
+                            placeholder="Ej: Luna, perro, collar..."
+                        >
+
+                    </div>
+
+
+                    <!-- Especie -->
+
+                    <div class="col-md-3">
+
+                        <label for="especie" class="form-label">
+                            Especie
+                        </label>
+
+                        <select id="especie" class="form-select">
+
+                            <option value="">
+                                Todas
+                            </option>
+
+                            <option value="perro">
+                                Perro
+                            </option>
+
+                            <option value="gato">
+                                Gato
+                            </option>
+
+                            <option value="otro">
+                                Otro
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Localidad -->
+
+                    <div class="col-md-3">
+
+                        <label for="localidad" class="form-label">
+                            Localidad
+                        </label>
+
+                        <input
+                            type="text"
+                            id="localidad"
+                            class="form-control"
+                            placeholder="Ej: Rafaela"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Botones -->
+
+                <div class="search-buttons">
+
+                    <button
+                        type="submit"
+                        class="btn-petto-primary"
+                    >
+                        🔎 Buscar
+                    </button>
+
+                    <button
+                        type="reset"
+                        class="btn-petto-secondary"
+                    >
+                        Limpiar filtros
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- =========================
+             RESULTADOS
+        ========================== -->
+
+        <section class="results-section">
+
+            <div class="results-header">
+
+                <h2>Mascotas extraviadas</h2>
+
+                <span class="results-count">
+                    2 reportes encontrados
+                </span>
+
+            </div>
+
+
+            <!-- =========================
+                 REPORTE 1
+            ========================== -->
+
+            <article class="lost-pet-card">
+
+                <div class="lost-pet-image">
+
+                    <div class="pet-placeholder">
+                        🐕
+                    </div>
+
+                </div>
+
+
+                <div class="lost-pet-info">
+
+                    <div class="lost-pet-title">
+
+                        <h3>Luna</h3>
+
+                        <span class="lost-status">
+                            EXTRAVIADA
+                        </span>
+
+                    </div>
+
+
+                    <p>
+                        <strong>Especie:</strong> Perro
+                    </p>
+
+                    <p>
+                        <strong>Raza:</strong> Labrador
+                    </p>
+
+                    <p>
+                        <strong>Color:</strong> Marrón claro
+                    </p>
+
+                    <p>
+                        <strong>Última ubicación:</strong>
+                        Barrio Centro
+                    </p>
+
+                    <p>
+                        <strong>Fecha:</strong>
+                        05/09/2026
+                    </p>
+
+
+                    <p class="pet-description">
+
+                        Tiene un collar rosa y una pequeña mancha
+                        blanca en el pecho.
+
+                    </p>
+
+
+                    <a
+                        href="avistamiento.html"
+                        class="btn-petto-primary"
+                    >
+                        👀 Informar avistamiento
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- =========================
+                 REPORTE 2
+            ========================== -->
+
+            <article class="lost-pet-card">
+
+                <div class="lost-pet-image">
+
+                    <div class="pet-placeholder">
+                        🐈
+                    </div>
+
+                </div>
+
+
+                <div class="lost-pet-info">
+
+                    <div class="lost-pet-title">
+
+                        <h3>Milo</h3>
+
+                        <span class="lost-status">
+                            EXTRAVIADO
+                        </span>
+
+                    </div>
+
+
+                    <p>
+                        <strong>Especie:</strong> Gato
+                    </p>
+
+                    <p>
+                        <strong>Raza:</strong> Mestizo
+                    </p>
+
+                    <p>
+                        <strong>Color:</strong> Gris
+                    </p>
+
+                    <p>
+                        <strong>Última ubicación:</strong>
+                        Plaza San Martín
+                    </p>
+
+                    <p>
+                        <strong>Fecha:</strong>
+                        04/09/2026
+                    </p>
+
+
+                    <p class="pet-description">
+
+                        Tiene los ojos verdes y lleva un collar azul.
+
+                    </p>
+
+
+                    <a
+                        href="avistamiento.html"
+                        class="btn-petto-primary"
+                    >
+                        👀 Informar avistamiento
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        const formulario = document.querySelector("form");
+
+        formulario.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            alert(
+                "La búsqueda está preparada. " +
+                "Más adelante conectaremos estos filtros con MySQL."
+            );
+
+        });
+
+    </script>
+
+</body>
+</html>

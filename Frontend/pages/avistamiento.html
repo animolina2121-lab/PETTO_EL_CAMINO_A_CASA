@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registrar avistamiento - PETTO</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <style>
+        :root {
+            --petto-primary: var(--azul-petto);
+            --petto-primary-dark: #50c5f0;
+            --petto-ink: var(--texto);
+            --petto-muted: var(--gris);
+            --petto-border: var(--borde);
+            --petto-bg: var(--fondo);
+        }
+
+        body {
+            background: var(--petto-bg);
+            color: var(--petto-ink);
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+
+        .main-content {
+            min-height: 100vh;
+            padding: clamp(24px, 4vw, 52px);
+        }
+
+        .page-header,
+        .avistamiento-info,
+        .form-container {
+            width: min(100%, 980px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            margin-bottom: 26px;
+        }
+
+        .page-header h1 {
+            margin-bottom: 8px;
+            color: var(--petto-ink);
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 750;
+            letter-spacing: -0.04em;
+        }
+
+        .page-header p {
+            max-width: 620px;
+            margin: 0;
+            color: var(--petto-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .avistamiento-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 24px;
+            padding: 20px 24px;
+            border: 1px solid rgba(112, 214, 255, 0.55);
+            border-radius: 18px;
+            background: linear-gradient(120deg, rgba(112, 214, 255, 0.15), #fff);
+        }
+
+        .avistamiento-icon {
+            display: grid;
+            width: 54px;
+            height: 54px;
+            flex: 0 0 54px;
+            place-items: center;
+            border-radius: 16px;
+            background: #fff;
+            font-size: 1.7rem;
+            box-shadow: 0 4px 14px rgba(48, 48, 48, 0.08);
+        }
+
+        .avistamiento-info h3 {
+            margin: 0 0 5px;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .avistamiento-info p {
+            margin: 0;
+            color: var(--petto-muted);
+            line-height: 1.5;
+        }
+
+        .form-container {
+            padding: clamp(22px, 4vw, 38px);
+            border: 1px solid var(--petto-border);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 14px 40px rgba(48, 48, 48, 0.06);
+        }
+
+        .form-section {
+            padding-bottom: 28px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--petto-border);
+        }
+
+        .form-section:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 28px;
+            border-bottom: 0;
+        }
+
+        .form-section h3 {
+            margin: 0 0 20px;
+            color: var(--petto-ink);
+            font-size: 1.12rem;
+            font-weight: 700;
+        }
+
+        .form-label {
+            margin-bottom: 8px;
+            color: var(--petto-ink);
+            font-size: 0.94rem;
+            font-weight: 600;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 48px;
+            border: 1px solid var(--petto-border);
+            border-radius: 11px;
+            color: var(--petto-ink);
+            box-shadow: none;
+        }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .form-control::placeholder {
+            color: var(--petto-muted);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--petto-primary);
+            box-shadow: 0 0 0 4px rgba(112, 214, 255, 0.24);
+        }
+
+        .location-help {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: rgba(255, 214, 112, 0.2);
+            color: var(--petto-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-description {
+            margin: -8px 0 18px;
+            color: var(--petto-muted);
+            line-height: 1.5;
+        }
+
+        .photo-upload {
+            padding: 24px;
+            border: 1.5px dashed rgba(112, 214, 255, 0.8);
+            border-radius: 14px;
+            background: rgba(112, 214, 255, 0.07);
+            text-align: center;
+        }
+
+        .photo-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border: 1px solid var(--petto-border);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--petto-ink);
+            font-weight: 650;
+            cursor: pointer;
+            transition: background-color 160ms ease, transform 160ms ease;
+        }
+
+        .photo-label:hover {
+            background: rgba(112, 214, 255, 0.18);
+            transform: translateY(-1px);
+        }
+
+        #fotoAvistamiento {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            clip-path: inset(50%);
+        }
+
+        #nombreFoto {
+            margin: 12px 0 0;
+            color: var(--petto-muted);
+            font-size: 0.9rem;
+            overflow-wrap: anywhere;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding-top: 4px;
+        }
+
+        .btn-petto-primary,
+        .btn-petto-secondary {
+            display: inline-flex;
+            min-height: 46px;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 18px;
+            border: 1px solid transparent;
+            border-radius: 11px;
+            font: inherit;
+            font-weight: 650;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 160ms ease, transform 160ms ease;
+        }
+
+        .btn-petto-primary {
+            background: var(--petto-primary);
+            color: var(--petto-ink);
+        }
+
+        .btn-petto-primary:hover {
+            background: var(--petto-primary-dark);
+            color: var(--petto-ink);
+            transform: translateY(-1px);
+        }
+
+        .btn-petto-secondary {
+            border-color: var(--petto-border);
+            background: #fff;
+            color: var(--petto-ink);
+        }
+
+        .btn-petto-secondary:hover {
+            background: rgba(112, 214, 255, 0.12);
+            color: var(--petto-ink);
+        }
+
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 24px 16px;
+            }
+
+            .avistamiento-info {
+                align-items: flex-start;
+                padding: 18px;
+            }
+
+            .form-container {
+                border-radius: 16px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .form-actions > * {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         BARRA LATERAL
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="petto-logo">
+                🐾
+            </div>
+
+            <h2>PETTO</h2>
+
+            <p>
+                EL CAMINO A CASA
+            </p>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <a href="dashboard.html"class="menu-item">
+                🏠 <span>Inicio</span>
+            </a>
+
+            <a href="mascotas.html"class="menu-item">
+                🐾 <span>Mis mascotas</span>
+            </a>
+
+            <a href="extravio.html"class="menu-item">
+                🚨 <span>Reportar extravío</span>
+            </a>
+
+            <a href="buscar.html"class="menu-item">
+                🔎 <span>Buscar mascotas</span>
+            </a>
+
+            <a href="avistamiento.html" class="menu-item activo">
+                👀 <span>Avistamientos</span>
+            </a>
+
+            <a href="mapa.html"class="menu-item">
+                📍 <span>Mapa</span>
+            </a>
+
+            <a href="perfil.html"class="menu-item">
+                👤 <span>Mi perfil</span>
+            </a>
+
+            <a href="login.html"class="menu-item">
+                🚪 <span>Cerrar sesión</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+
+    <main class="main-content">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>
+                    Registrar avistamiento 👀
+                </h1>
+
+                <p>
+                    ¿Viste una mascota extraviada?
+                    Tu información puede ayudarla a volver a casa.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             INFORMACIÓN
+        ========================== -->
+
+        <div class="avistamiento-info">
+
+            <div class="avistamiento-icon">
+                👀
+            </div>
+
+            <div>
+
+                <h3>
+                    Tu ayuda es importante
+                </h3>
+
+                <p>
+                    Registrá todos los datos que recuerdes sobre
+                    el lugar y el momento en que viste a la mascota.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             FORMULARIO
+        ========================== -->
+
+        <section class="form-container">
+
+            <form id="formAvistamiento">
+
+
+                <!-- MASCOTA -->
+
+                <div class="form-section">
+
+                    <h3>
+                        🐾 Mascota
+                    </h3>
+
+                    <div class="mb-3">
+
+                        <label
+                            for="mascota"
+                            class="form-label"
+                        >
+                            ¿Qué mascota viste?
+                        </label>
+
+                        <select
+                            id="mascota"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Seleccionar mascota
+                            </option>
+
+                            <option value="luna">
+                                Luna - Perro Labrador
+                            </option>
+
+                            <option value="milo">
+                                Milo - Gato Mestizo
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FECHA Y HORA -->
+
+                <div class="form-section">
+
+                    <h3>
+                        📅 Fecha y hora
+                    </h3>
+
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+
+                            <label
+                                for="fecha"
+                                class="form-label"
+                            >
+                                Fecha del avistamiento
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fecha"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label
+                                for="hora"
+                                class="form-label"
+                            >
+                                Hora aproximada
+                            </label>
+
+                            <input
+                                type="time"
+                                id="hora"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- UBICACIÓN -->
+
+                <div class="form-section">
+
+                    <h3>
+                        📍 Ubicación
+                    </h3>
+
+
+                    <div class="mb-3">
+
+                        <label
+                            for="direccion"
+                            class="form-label"
+                        >
+                            Dirección o lugar
+                        </label>
+
+                        <input
+                            type="text"
+                            id="direccion"
+                            class="form-control"
+                            placeholder="Ej: Av. Santa Fe 123"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+
+                            <label
+                                for="localidad"
+                                class="form-label"
+                            >
+                                Localidad
+                            </label>
+
+                            <input
+                                type="text"
+                                id="localidad"
+                                class="form-control"
+                                placeholder="Ej: Rafaela"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label
+                                for="referencia"
+                                class="form-label"
+                            >
+                                Punto de referencia
+                            </label>
+
+                            <input
+                                type="text"
+                                id="referencia"
+                                class="form-control"
+                                placeholder="Ej: Cerca de la plaza"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="location-help">
+
+                        📍 Más adelante podremos seleccionar
+                        la ubicación directamente desde un mapa.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DESCRIPCIÓN -->
+
+                <div class="form-section">
+
+                    <h3>
+                        📝 Información del avistamiento
+                    </h3>
+
+
+                    <div class="mb-3">
+
+                        <label
+                            for="descripcion"
+                            class="form-label"
+                        >
+                            ¿Qué observaste?
+                        </label>
+
+                        <textarea
+                            id="descripcion"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Describí qué estaba haciendo la mascota, hacia dónde se dirigía, si estaba acompañada, etc."
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FOTO -->
+
+                <div class="form-section">
+
+                    <h3>
+                        📷 Fotografía
+                    </h3>
+
+                    <p class="form-description">
+
+                        Si pudiste tomar una fotografía,
+                        podés adjuntarla para ayudar a identificar
+                        a la mascota.
+
+                    </p>
+
+
+                    <div class="photo-upload">
+
+                        <label
+                            for="fotoAvistamiento"
+                            class="photo-label"
+                        >
+
+                            📷
+
+                            <span>
+                                Seleccionar fotografía
+                            </span>
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="fotoAvistamiento"
+                            accept="image/*"
+                        >
+
+
+                        <p id="nombreFoto">
+                            No se seleccionó ninguna fotografía.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BOTONES -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="buscar.html"
+                        class="btn-petto-secondary"
+                    >
+                        Cancelar
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn-petto-primary"
+                    >
+                        👀 Registrar avistamiento
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        const formulario =
+            document.getElementById("formAvistamiento");
+
+
+        const foto =
+            document.getElementById("fotoAvistamiento");
+
+
+        const nombreFoto =
+            document.getElementById("nombreFoto");
+
+
+        /* Mostrar nombre de fotografía */
+
+        foto.addEventListener("change", function () {
+
+            if (foto.files.length > 0) {
+
+                nombreFoto.textContent =
+                    "Fotografía seleccionada: " +
+                    foto.files[0].name;
+
+            } else {
+
+                nombreFoto.textContent =
+                    "No se seleccionó ninguna fotografía.";
+
+            }
+
+        });
+
+
+
+        /* Enviar formulario */
+
+        formulario.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+
+            alert(
+                "¡Avistamiento registrado correctamente! " +
+                "Más adelante conectaremos este formulario " +
+                "con MySQL y el mapa."
+            );
+
+
+            formulario.reset();
+
+
+            nombreFoto.textContent =
+                "No se seleccionó ninguna fotografía.";
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

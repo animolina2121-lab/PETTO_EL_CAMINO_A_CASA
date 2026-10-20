@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PETTO - Mis mascotas</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Estilos PETTO -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- ==============================
+             BARRA LATERAL
+        =============================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <div class="logo-petto">🐾 PETTO</div>
+                <p>EL CAMINO A CASA</p>
+            </div>
+
+            <nav class="menu">
+
+                <a href="dashboard.html" class="menu-item">
+                    🏠 <span>Inicio</span>
+                </a>
+
+                <a href="mascotas.html" class="menu-item activo">
+                    🐕 <span>Mis mascotas</span>
+                </a>
+
+                <a href="extravio.html" class="menu-item">
+                    🚨 <span>Reportar extravío</span>
+                </a>
+
+                <a href="avistamiento.html" class="menu-item">
+                    📍 <span>Avistamientos</span>
+                </a>
+
+                <a href="mapa.html" class="menu-item">
+                    🗺️ <span>Mapa</span>
+                </a>
+
+                <a href="perfil.html" class="menu-item">
+                    👤 <span>Mi perfil</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+
+                <a href="login.html" class="menu-item cerrar-sesion">
+                    🚪 <span>Cerrar sesión</span>
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ==============================
+             CONTENIDO
+        =============================== -->
+
+        <main class="contenido-dashboard">
+
+            <!-- ENCABEZADO -->
+
+            <header class="pagina-header">
+
+                <div>
+                    <h1>🐾 Mis mascotas</h1>
+
+                    <p>
+                        Registrá y administrá la información
+                        de tus mascotas.
+                    </p>
+                </div>
+
+                <a href="registrar-mascotas.html" class="btn-petto">
+                    + Registrar mascota
+                </a>
+
+            </header>
+
+
+            <!-- ==============================
+                 MASCOTAS
+            =============================== -->
+
+            <section class="mascotas-container">
+
+                <!-- MASCOTA 1 -->
+
+                <article class="mascota-card">
+
+                    <div class="mascota-imagen">
+                        🐶
+                    </div>
+
+                    <div class="mascota-info">
+
+                        <span class="estado-mascota">
+                            ✓ Registrada
+                        </span>
+
+                        <h2>india</h2>
+
+                        <p>
+                            <strong>Especie:</strong> Perro
+                        </p>
+
+                        <p>
+                            <strong>Raza:</strong> Pastor alemán
+                        </p>
+
+                        <p>
+                            <strong>Sexo:</strong> Hembra
+                        </p>
+
+                        <p>
+                            <strong>Edad:</strong> 5 años
+                        </p>
+
+                        <div class="mascota-botones">
+
+                            <a href="mascota.html" class="btn-dashboard">
+                                Ver información
+                            </a>
+
+                            <button class="btn-editar">
+                                Editar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- MASCOTA 2 -->
+
+                <article class="mascota-card">
+
+                    <div class="mascota-imagen">
+                        🐱
+                    </div>
+
+                    <div class="mascota-info">
+
+                        <span class="estado-mascota">
+                            ✓ Registrada
+                        </span>
+
+                        <h2>suertudo</h2>
+
+                        <p>
+                            <strong>Especie:</strong> Gato
+                        </p>
+
+                        <p>
+                            <strong>Raza:</strong> Mestizo
+                        </p>
+
+                        <p>
+                            <strong>Sexo:</strong> Macho
+                        </p>
+
+                        <p>
+                            <strong>Edad:</strong> 6 meses
+                        </p>
+
+                        <div class="mascota-botones">
+
+                            <a href="mascota.html" class="btn-dashboard">
+                                Ver información
+                            </a>
+
+                            <button class="btn-editar">
+                                Editar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- AGREGAR MASCOTA -->
+
+                <article class="mascota-card agregar-mascota">
+
+                    <div class="agregar-icono">
+                        +
+                    </div>
+
+                    <h2>¿Tenés otra mascota?</h2>
+
+                    <p>
+                        Registrala para tener toda su información
+                        organizada en PETTO.
+                    </p>
+
+                    <a href="registrar-mascota.html" class="btn-petto">
+                        Registrar mascota
+                    </a>
+
+                </article>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- Bootstrap JavaScript -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
