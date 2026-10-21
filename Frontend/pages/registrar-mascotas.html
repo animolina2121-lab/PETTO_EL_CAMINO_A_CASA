@@ -130,6 +130,8 @@
 
                 <form id="formularioMascota">
 
+                    <div id="mensajeMascota" class="alert d-none" role="alert"></div>
+
 
                     <!-- =================================
                          DATOS PRINCIPALES
@@ -413,51 +415,161 @@
          JAVASCRIPT
     ====================================== -->
 
-    <script>
+    
 
-        // Mostrar el nombre del archivo seleccionado
+<script>
+    const API_MASCOTAS = "http://localhost:5174/api/Mascotas";
 
-        const foto = document.getElementById("foto");
+    // Recuperar el usuario que inició sesión.
+    const usuarioGuardado =
+        sessionStorage.getItem("pettoUsuario") ||
+        localStorage.getItem("pettoUsuario");
 
-        const nombreArchivo =
-            document.getElementById("nombreArchivo");
+    let usuarioActual = null;
 
+    try {
+        if (usuarioGuardado) {
+            usuarioActual = JSON.parse(usuarioGuardado);
+        }
+    } catch (error) {
+        console.error("Error al recuperar el usuario:", error);
+    }
 
-        foto.addEventListener("change", function () {
+    // Si no existe una sesión válida, volver al login.
+    if (!usuarioActual || !usuarioActual.idUsuario) {
+        sessionStorage.removeItem("pettoUsuario");
+        localStorage.removeItem("pettoUsuario");
+        window.location.replace("login.html");
+    }
 
-            if (foto.files.length > 0) {
+    const foto = document.getElementById("foto");
+    const nombreArchivo = document.getElementById("nombreArchivo");
+    const formulario = document.getElementById("formularioMascota");
+    const mensaje = document.getElementById("mensajeMascota");
 
-                nombreArchivo.textContent =
-                    "Archivo seleccionado: " +
-                    foto.files[0].name;
+    // Mostrar el nombre de la fotografía seleccionada.
+    foto.addEventListener("change", function () {
+        nombreArchivo.textContent = foto.files.length > 0
+            ? "Archivo seleccionado: " + foto.files[0].name
+            : "";
+    });
 
-            } else {
+    formulario.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-                nombreArchivo.textContent = "";
+        if (!usuarioActual || !usuarioActual.idUsuario) {
+            mostrarMensaje(
+                "Debés iniciar sesión para registrar una mascota.",
+                "danger"
+            );
+            return;
+        }
 
+        mensaje.className = "alert d-none";
+        mensaje.textContent = "";
+
+        const nombre = document.getElementById("nombre").value.trim();
+        const especie = document.getElementById("especie").value;
+        const raza = document.getElementById("raza").value.trim();
+        const sexo = document.getElementById("sexo").value;
+        const edadTexto = document.getElementById("edad").value;
+        const color = document.getElementById("color").value.trim();
+        const caracteristicas =
+            document.getElementById("caracteristicas").value.trim();
+
+        // Calcular una fecha de nacimiento aproximada a partir de la edad.
+        let fechaNacimiento = null;
+
+        if (edadTexto !== "") {
+            const edad = Number(edadTexto);
+
+            if (!Number.isInteger(edad) || edad < 0 || edad > 100) {
+                mostrarMensaje(
+                    "Ingresá una edad válida entre 0 y 100 años.",
+                    "danger"
+                );
+                return;
             }
 
-        });
+            const hoy = new Date();
+            const nacimiento = new Date(hoy);
+            nacimiento.setFullYear(hoy.getFullYear() - edad);
 
+            fechaNacimiento =
+                nacimiento.getFullYear() + "-" +
+                String(nacimiento.getMonth() + 1).padStart(2, "0") + "-" +
+                String(nacimiento.getDate()).padStart(2, "0");
+        }
 
-        // Evento temporal del formulario
+        // Asociar la mascota al usuario que inició sesión.
+        const mascota = {
+            idUsuario: Number(usuarioActual.idUsuario),
+            nombre: nombre,
+            especie: especie,
+            raza: raza || null,
+            sexo: sexo || null,
+            fechaNacimiento: fechaNacimiento,
+            color: color || null,
+            caracteristicas: caracteristicas || null,
+            estado: "REGISTRADA"
+        };
 
-        const formulario =
-            document.getElementById("formularioMascota");
+        const boton = formulario.querySelector('button[type="submit"]');
 
+        boton.disabled = true;
+        boton.textContent = "Guardando mascota...";
 
-        formulario.addEventListener("submit", function (event) {
+        try {
+            const respuesta = await fetch(API_MASCOTAS, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(mascota)
+            });
 
-            event.preventDefault();
+            const resultado = await respuesta.json();
 
-            alert(
-                "Formulario listo. Más adelante conectaremos este formulario con MySQL."
+            if (!respuesta.ok) {
+                throw new Error(
+                    resultado.mensaje ||
+                    "No se pudo registrar la mascota."
+                );
+            }
+
+            mostrarMensaje(
+                "¡Mascota registrada correctamente!",
+                "success"
             );
 
-        });
+            formulario.reset();
+            nombreArchivo.textContent = "";
 
-    </script>
+            // Volver a la lista después de mostrar el mensaje.
+            setTimeout(function () {
+                window.location.href = "mascotas.html";
+            }, 1200);
 
+        } catch (error) {
+            console.error("Error al registrar mascota:", error);
+
+            mostrarMensaje(
+                error.message === "Failed to fetch"
+                    ? "No se pudo conectar con el servidor. Verificá que el backend esté funcionando."
+                    : error.message,
+                "danger"
+            );
+        } finally {
+            boton.disabled = false;
+            boton.textContent = "🐾 Registrar mascota";
+        }
+    });
+
+    function mostrarMensaje(texto, tipo) {
+        mensaje.textContent = texto;
+        mensaje.className = "alert alert-" + tipo;
+    }
+</script>
 
     <!-- Bootstrap JS -->
 

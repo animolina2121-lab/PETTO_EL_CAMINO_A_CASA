@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PETTO.API.Data;
+using PETTO.API.DTOs;
 using PETTO.API.Models;
 
 namespace PETTO.API.Controllers
@@ -44,13 +45,13 @@ namespace PETTO.API.Controllers
             return Ok(reporte);
         }
 
-        // POST: api/ReportesExtravio
+               // POST: api/ReportesExtravio
         [HttpPost]
-        public async Task<ActionResult<ReporteExtravio>>
-            CrearReporte(ReporteExtravio reporte)
+        public async Task<ActionResult<ReporteExtravio>> CrearReporte(
+            [FromBody] CrearReporteExtravioDto datos)
         {
             var mascotaExiste = await _context.Mascotas
-                .AnyAsync(m => m.IdMascota == reporte.IdMascota);
+                .AnyAsync(m => m.IdMascota == datos.IdMascota);
 
             if (!mascotaExiste)
             {
@@ -59,6 +60,26 @@ namespace PETTO.API.Controllers
                     mensaje = "La mascota indicada no existe."
                 });
             }
+
+            if (datos.Fecha!.Value.Date > DateTime.Today)
+            {
+                return BadRequest(new
+                {
+                    mensaje = "La fecha del extravío no puede ser futura."
+                });
+            }
+
+            var reporte = new ReporteExtravio
+            {
+                IdMascota = datos.IdMascota,
+                Fecha = datos.Fecha.Value,
+                Hora = datos.Hora!.Value,
+                Ubicacion = datos.Ubicacion?.Trim(),
+                Latitud = datos.Latitud,
+                Longitud = datos.Longitud,
+                Descripcion = datos.Descripcion?.Trim(),
+                Estado = "extraviada"   // lo decide el servidor
+            };
 
             _context.ReportesExtravio.Add(reporte);
             await _context.SaveChangesAsync();

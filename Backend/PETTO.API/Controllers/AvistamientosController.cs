@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PETTO.API.Data;
+using PETTO.API.DTOs;
 using PETTO.API.Models;
 
 namespace PETTO.API.Controllers
@@ -47,13 +48,13 @@ namespace PETTO.API.Controllers
             return Ok(avistamiento);
         }
 
-        // POST: api/Avistamientos
+                // POST: api/Avistamientos
         [HttpPost]
-        public async Task<ActionResult<Avistamiento>>
-            CrearAvistamiento(Avistamiento avistamiento)
+        public async Task<ActionResult<Avistamiento>> CrearAvistamiento(
+            [FromBody] CrearAvistamientoDto datos)
         {
             var reporteExiste = await _context.ReportesExtravio
-                .AnyAsync(r => r.IdReporte == avistamiento.IdReporte);
+                .AnyAsync(r => r.IdReporte == datos.IdReporte);
 
             if (!reporteExiste)
             {
@@ -64,7 +65,7 @@ namespace PETTO.API.Controllers
             }
 
             var usuarioExiste = await _context.Usuarios
-                .AnyAsync(u => u.IdUsuario == avistamiento.IdUsuario);
+                .AnyAsync(u => u.IdUsuario == datos.IdUsuario);
 
             if (!usuarioExiste)
             {
@@ -73,6 +74,18 @@ namespace PETTO.API.Controllers
                     mensaje = "El usuario indicado no existe."
                 });
             }
+
+            var avistamiento = new Avistamiento
+            {
+                IdReporte = datos.IdReporte,
+                IdUsuario = datos.IdUsuario,
+                Fecha = datos.Fecha!.Value,
+                Hora = datos.Hora!.Value,
+                Ubicacion = datos.Ubicacion?.Trim(),
+                Latitud = datos.Latitud,
+                Longitud = datos.Longitud,
+                Descripcion = datos.Descripcion?.Trim()
+            };
 
             _context.Avistamientos.Add(avistamiento);
             await _context.SaveChangesAsync();

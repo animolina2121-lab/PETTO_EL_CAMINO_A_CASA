@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PETTO.API.Data;
+using PETTO.API.DTOs;
 using PETTO.API.Models;
 
 namespace PETTO.API.Controllers
@@ -37,15 +38,31 @@ namespace PETTO.API.Controllers
             return Ok(mascota);
         }
 
-        // POST: api/Mascotas
+                // POST: api/Mascotas
         [HttpPost]
-        public async Task<ActionResult<Mascota>> CrearMascota(Mascota mascota)
+        public async Task<ActionResult<Mascota>> CrearMascota(
+            [FromBody] CrearMascotaDto datos)
         {
             var usuarioExiste = await _context.Usuarios
-                .AnyAsync(u => u.IdUsuario == mascota.IdUsuario);
+                .AnyAsync(u => u.IdUsuario == datos.IdUsuario);
 
             if (!usuarioExiste)
                 return BadRequest(new { mensaje = "El usuario indicado no existe." });
+
+            var mascota = new Mascota
+            {
+                IdUsuario = datos.IdUsuario,
+                Nombre = datos.Nombre.Trim(),
+                Especie = datos.Especie.Trim(),
+                Raza = datos.Raza?.Trim(),
+                Sexo = datos.Sexo?.Trim(),
+                FechaNacimiento = datos.FechaNacimiento,
+                Color = datos.Color?.Trim(),
+                Tamaño = datos.Tamaño?.Trim(),
+                Peso = datos.Peso,
+                Caracteristicas = datos.Caracteristicas?.Trim(),
+                Estado = "REGISTRADA"   // lo decide el servidor, no el cliente
+            };
 
             _context.Mascotas.Add(mascota);
             await _context.SaveChangesAsync();
@@ -56,5 +73,66 @@ namespace PETTO.API.Controllers
                 mascota
             );
         }
+        
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarMascota(
+            int id,
+            [FromBody] CrearMascotaDto datos)
+        {
+            var mascota = await _context.Mascotas
+                .FirstOrDefaultAsync(m => m.IdMascota == id);
+
+            if (mascota == null)
+                return NotFound(new { mensaje = "No se encontró la mascota." });
+
+            mascota.Nombre = datos.Nombre.Trim();
+            mascota.Especie = datos.Especie.Trim();
+            mascota.Raza = datos.Raza?.Trim();
+            mascota.Sexo = datos.Sexo?.Trim();
+            mascota.FechaNacimiento = datos.FechaNacimiento;
+            mascota.Color = datos.Color?.Trim();
+            mascota.Tamaño = datos.Tamaño?.Trim();
+            mascota.Peso = datos.Peso;
+            mascota.Caracteristicas = datos.Caracteristicas?.Trim();
+
+            // El estado no se modifica desde este endpoint.
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                mensaje = "Mascota actualizada correctamente.",
+                idMascota = mascota.IdMascota
+            });
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarMascota(int id)
+        {
+            var mascota = await _context.Mascotas
+                .FirstOrDefaultAsync(m => m.IdMascota == id);
+
+            if (mascota == null)
+                return NotFound(new { mensaje = "No se encontró la mascota." });
+
+            var tieneReportes = await _context.ReportesExtravio
+                .AnyAsync(r => r.IdMascota == id);
+
+            if (tieneReportes)
+            {
+                return Conflict(new
+                {
+                    mensaje = "No se puede eliminar esta mascota porque tiene reportes de extravío asociados."
+                });
+            }
+
+            _context.Mascotas.Remove(mascota);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                mensaje = "Mascota eliminada correctamente."
+            });
+        }
+
     }
 }

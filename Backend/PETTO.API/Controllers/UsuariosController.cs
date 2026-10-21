@@ -19,27 +19,6 @@ namespace PETTO.API.Controllers
             _context = context;
         }
 
-        // GET: api/Usuarios
-        [HttpGet]
-        public async Task<IActionResult> ObtenerUsuarios()
-        {
-            var usuarios = await _context.Usuarios
-                .Select(u => new
-                {
-                    u.IdUsuario,
-                    u.Nombre,
-                    u.Apellido,
-                    u.Dni,
-                    u.Email,
-                    u.Telefono,
-                    u.Domicilio,
-                    u.Rol,
-                    u.FechaRegistro
-                })
-                .ToListAsync();
-
-            return Ok(usuarios);
-        }
 
         // GET: api/Usuarios/5
         [HttpGet("{id}")]
@@ -52,10 +31,7 @@ namespace PETTO.API.Controllers
                     u.IdUsuario,
                     u.Nombre,
                     u.Apellido,
-                    u.Dni,
                     u.Email,
-                    u.Telefono,
-                    u.Domicilio,
                     u.Rol,
                     u.FechaRegistro
                 })
@@ -115,6 +91,56 @@ namespace PETTO.API.Controllers
                     mensaje = "Cuenta creada correctamente."
                 }
             );
+
+        }
+        
+        // POST: api/Usuarios/login
+        [HttpPost("login")]
+        public async Task<IActionResult> IniciarSesion(
+            [FromBody] LoginDto datos)
+        {
+            // 1. Buscar el usuario por su correo electrónico.
+            var email = datos.Email.Trim();
+
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Email == email);
+
+            // 2. Verificar que exista y que la contraseña sea correcta.
+            if (usuario == null)
+            {
+                return Unauthorized(new
+                {
+                    mensaje = "Correo o contraseña incorrectos."
+                });
+            }
+
+            var resultado = _passwordHasher.VerifyHashedPassword(
+                usuario,
+                usuario.Contraseña,
+                datos.Contraseña
+            );
+
+            if (resultado == PasswordVerificationResult.Failed)
+            {
+                return Unauthorized(new
+                {
+                    mensaje = "Correo o contraseña incorrectos."
+                });
+            }
+
+            // 3. Devolver solo los datos necesarios para continuar.
+            return Ok(new
+            {
+                mensaje = "Inicio de sesión correcto.",
+                usuario = new
+                {
+                    idUsuario = usuario.IdUsuario,
+                    nombre = usuario.Nombre,
+                    apellido = usuario.Apellido,
+                    email = usuario.Email,
+                    rol = usuario.Rol
+                }
+            });
         }
     }
 }

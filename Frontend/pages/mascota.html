@@ -83,6 +83,7 @@
         ====================================== -->
 
         <main class="contenido-dashboard">
+            <div id="mensajeFicha" class="alert d-none" role="alert"></div>
 
 
             <!-- ENCABEZADO -->
@@ -91,7 +92,7 @@
 
                 <div>
 
-                    <h1>🐾 Información de Luna</h1>
+                    <h1 id="tituloMascota">🐾 Información de mascota</h1>
 
                     <p>
                         Información detallada de tu mascota.
@@ -132,10 +133,10 @@
 
                 <div class="perfil-mascota-info">
 
-                    <h2>Luna</h2>
+                    <h2 id="nombreMascota">Cargando...</h2>
 
-                    <p class="descripcion-mascota">
-                        Mi compañera de cuatro patas.
+                    <p class="descripcion-mascota" id="descripcionMascota">
+                        cargando información...
                     </p>
 
 
@@ -149,7 +150,7 @@
 
                             <div>
                                 <small>Especie</small>
-                                <strong>Perro</strong>
+                                <strong id="especieMascota">—</strong>
                             </div>
 
                         </div>
@@ -163,7 +164,7 @@
 
                             <div>
                                 <small>Raza</small>
-                                <strong>Labrador</strong>
+                                <strong id="razaMascota">—</strong>
                             </div>
 
                         </div>
@@ -177,7 +178,7 @@
 
                             <div>
                                 <small>Sexo</small>
-                                <strong>Hembra</strong>
+                                <strong id="sexoMascota">—</strong>
                             </div>
 
                         </div>
@@ -191,7 +192,7 @@
 
                             <div>
                                 <small>Edad</small>
-                                <strong>3 años</strong>
+                                <strong id="edadMascota">—</strong>
                             </div>
 
                         </div>
@@ -205,7 +206,7 @@
 
                             <div>
                                 <small>Color / pelaje</small>
-                                <strong>Marrón y blanco</strong>
+                                <strong id="colorMascota">—</strong>
                             </div>
 
                         </div>
@@ -227,6 +228,78 @@
                         </a>
 
                     </div>
+                    
+                    <div id="formularioEdicion" class="card p-3 mt-3" hidden>
+                        <h3>Editar información</h3>
+
+                        <form id="formEditarMascota">
+                            <div class="mb-3">
+                                <label for="editarNombre" class="form-label">Nombre</label>
+                                <input id="editarNombre" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarEspecie" class="form-label">Especie</label>
+                                <input id="editarEspecie" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarRaza" class="form-label">Raza</label>
+                                <input id="editarRaza" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarSexo" class="form-label">Sexo</label>
+                                <input id="editarSexo" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarFecha" class="form-label">Fecha de nacimiento</label>
+                                <input id="editarFecha" type="date" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarColor" class="form-label">Color</label>
+                                <input id="editarColor" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarTamaño" class="form-label">Tamaño</label>
+                                <input id="editarTamaño" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarPeso" class="form-label">Peso en kg</label>
+                                <input id="editarPeso" type="number" min="0"
+                                    step="0.01" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editarCaracteristicas" class="form-label">
+                                    Características
+                                </label>
+                                <textarea id="editarCaracteristicas"
+                                        class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                Guardar cambios
+                            </button>
+
+                            <button type="button" id="cancelarEdicion"
+                                    class="btn btn-secondary">
+                                Cancelar
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="mt-3">
+                        <button type="button" id="eliminarMascota"
+                                class="btn btn-danger">
+                            Eliminar mascota
+                        </button>
+                    </div>
+
 
                 </div>
 
@@ -250,11 +323,8 @@
 
                 <div class="caracteristicas-box">
 
-                    <p>
-                        Luna tiene una mancha blanca en el pecho,
-                        una pequeña mancha oscura cerca del ojo
-                        derecho y utiliza habitualmente un collar
-                        rosa.
+                    <p id="caracteristicasMascota">
+                        Cargando características...
                     </p>
 
                 </div>
@@ -389,6 +459,243 @@
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    
+    <script>
+        const API_MASCOTAS = "http://localhost:5174/api/Mascotas";
+
+        let mascotaActual = null;
+
+        document.addEventListener("DOMContentLoaded", cargarFicha);
+
+        async function cargarFicha() {
+            const mensaje = document.getElementById("mensajeFicha");
+            const parametros = new URLSearchParams(window.location.search);
+            const id = parametros.get("id");
+
+            if (!id || !/^\d+$/.test(id) || Number(id) < 1) {
+                mostrarError("No se indicó un ID de mascota válido.");
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(
+                    `${API_MASCOTAS}/${encodeURIComponent(id)}`
+                );
+
+                if (respuesta.status === 404) {
+                    mostrarError("No se encontró la mascota solicitada.");
+                    return;
+                }
+
+                if (!respuesta.ok) {
+                    throw new Error("La API devolvió un error.");
+                }
+
+                mascotaActual = await respuesta.json();
+                const mascota = mascotaActual;
+
+                document.getElementById("tituloMascota").textContent =
+                    "🐾 Información de " + (mascota.nombre || "tu mascota");
+
+                document.getElementById("nombreMascota").textContent =
+                    mascota.nombre || "Sin nombre";
+
+                document.getElementById("descripcionMascota").textContent =
+                    mascota.caracteristicas || "Sin descripción registrada.";
+
+                document.getElementById("especieMascota").textContent =
+                    mascota.especie || "Sin registrar";
+
+                document.getElementById("razaMascota").textContent =
+                    mascota.raza || "Sin registrar";
+
+                document.getElementById("sexoMascota").textContent =
+                    mascota.sexo || "Sin registrar";
+
+                document.getElementById("colorMascota").textContent =
+                    mascota.color || "Sin registrar";
+
+                document.getElementById("edadMascota").textContent =
+                    calcularEdad(mascota.fechaNacimiento);
+
+                document.getElementById("caracteristicasMascota").textContent =
+                    mascota.caracteristicas || "No hay características registradas.";
+
+                const estado = (mascota.estado || "").toUpperCase();
+                const etiquetaEstado =
+                    document.querySelector(".estado-mascota");
+
+                if (etiquetaEstado) {
+                    etiquetaEstado.textContent = estado || "Sin estado";
+                    etiquetaEstado.classList.remove("estado-encontrada");
+
+                    if (estado === "ENCONTRADA") {
+                        etiquetaEstado.classList.add("estado-encontrada");
+                    }
+                }
+
+                // El peso solo se mostrará si existe en la base de datos.
+                const tarjetasSalud = document.querySelectorAll(".salud-card");
+
+                if (tarjetasSalud.length > 1) {
+                    tarjetasSalud[1].querySelector("strong").textContent =
+                        mascota.peso != null
+                            ? mascota.peso + " kg"
+                            : "Sin registrar";
+                }
+
+            } catch (error) {
+                console.error("Error al cargar la ficha:", error);
+                mostrarError(
+                    "No se pudieron cargar los datos. Verificá que el backend esté funcionando."
+                );
+            }
+
+            function mostrarError(texto) {
+                mensaje.textContent = texto;
+                mensaje.className = "alert alert-danger";
+            }
+        }
+
+        function calcularEdad(fechaNacimiento) {
+            if (!fechaNacimiento) return "Sin registrar";
+
+            const nacimiento = new Date(fechaNacimiento);
+
+            if (Number.isNaN(nacimiento.getTime())) {
+                return "Sin registrar";
+            }
+
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - nacimiento.getFullYear();
+
+            const aunNoCumplio =
+                hoy.getMonth() < nacimiento.getMonth() ||
+                (hoy.getMonth() === nacimiento.getMonth() &&
+                hoy.getDate() < nacimiento.getDate());
+
+            if (aunNoCumplio) edad--;
+
+            return edad < 0 ? "Sin registrar" : edad + " años";
+        }
+
+        
+const botonEditar = document.querySelector(".btn-editar");
+const formularioEdicion = document.getElementById("formularioEdicion");
+const formEditar = document.getElementById("formEditarMascota");
+
+botonEditar.addEventListener("click", function () {
+    if (!mascotaActual) return;
+
+    document.getElementById("editarNombre").value =
+        mascotaActual.nombre || "";
+    document.getElementById("editarEspecie").value =
+        mascotaActual.especie || "";
+    document.getElementById("editarRaza").value =
+        mascotaActual.raza || "";
+    document.getElementById("editarSexo").value =
+        mascotaActual.sexo || "";
+    document.getElementById("editarFecha").value =
+        mascotaActual.fechaNacimiento
+            ? mascotaActual.fechaNacimiento.substring(0, 10)
+            : "";
+    document.getElementById("editarColor").value =
+        mascotaActual.color || "";
+    document.getElementById("editarTamaño").value =
+        mascotaActual.tamaño || "";
+    document.getElementById("editarPeso").value =
+        mascotaActual.peso ?? "";
+    document.getElementById("editarCaracteristicas").value =
+        mascotaActual.caracteristicas || "";
+
+    formularioEdicion.hidden = false;
+});
+
+document.getElementById("cancelarEdicion").addEventListener("click", () => {
+    formularioEdicion.hidden = true;
+});
+
+formEditar.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    if (!mascotaActual) return;
+
+    const datos = {
+        idUsuario: mascotaActual.idUsuario,
+        nombre: document.getElementById("editarNombre").value.trim(),
+        especie: document.getElementById("editarEspecie").value.trim(),
+        raza: document.getElementById("editarRaza").value.trim() || null,
+        sexo: document.getElementById("editarSexo").value.trim() || null,
+        fechaNacimiento:
+            document.getElementById("editarFecha").value || null,
+        color: document.getElementById("editarColor").value.trim() || null,
+        tamaño: document.getElementById("editarTamaño").value.trim() || null,
+        peso: document.getElementById("editarPeso").value === ""
+            ? null
+            : Number(document.getElementById("editarPeso").value),
+        caracteristicas:
+            document.getElementById("editarCaracteristicas").value.trim() || null
+    };
+
+            try {
+                const respuesta = await fetch(
+                    `${API_MASCOTAS}/${mascotaActual.idMascota}`,
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(datos)
+                    }
+                );
+
+                const resultado = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    alert(resultado.mensaje || "No se pudieron guardar los cambios.");
+                    return;
+                }
+
+                alert("¡Información actualizada correctamente!");
+                window.location.reload();
+
+            } catch (error) {
+                console.error(error);
+                alert("No se pudo conectar con el servidor.");
+            }
+        });
+
+        document.getElementById("eliminarMascota").addEventListener("click", async () => {
+            if (!mascotaActual) return;
+
+            const confirmar = confirm(
+                `¿Seguro que querés eliminar a ${mascotaActual.nombre}? Esta acción no se puede deshacer.`
+            );
+
+            if (!confirmar) return;
+
+            try {
+                const respuesta = await fetch(
+                    `${API_MASCOTAS}/${mascotaActual.idMascota}`,
+                    { method: "DELETE" }
+                );
+
+                const resultado = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    alert(resultado.mensaje || "No se pudo eliminar la mascota.");
+                    return;
+                }
+
+                alert("Mascota eliminada correctamente.");
+                window.location.href = "mascotas.html";
+
+            } catch (error) {
+                console.error(error);
+                alert("No se pudo conectar con el servidor.");
+            }
+        });
+
     </script>
 
 </body>
