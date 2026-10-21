@@ -463,238 +463,377 @@
 
     
     <script>
-        const API_MASCOTAS = "http://localhost:5174/api/Mascotas";
+       
+          
+const API_MASCOTAS = "http://localhost:5174/api/Mascotas";
 
-        let mascotaActual = null;
+let mascotaActual = null;
 
-        document.addEventListener("DOMContentLoaded", cargarFicha);
+// ========================================
+// 1. RECUPERAR LA SESIÓN DEL USUARIO
+// ========================================
 
-        async function cargarFicha() {
-            const mensaje = document.getElementById("mensajeFicha");
-            const parametros = new URLSearchParams(window.location.search);
-            const id = parametros.get("id");
+const usuarioGuardado =
+    sessionStorage.getItem("pettoUsuario") ||
+    localStorage.getItem("pettoUsuario");
 
-            if (!id || !/^\d+$/.test(id) || Number(id) < 1) {
-                mostrarError("No se indicó un ID de mascota válido.");
-                return;
-            }
+let usuarioActual = null;
 
-            try {
-                const respuesta = await fetch(
-                    `${API_MASCOTAS}/${encodeURIComponent(id)}`
-                );
+try {
+    if (usuarioGuardado) {
+        usuarioActual = JSON.parse(usuarioGuardado);
+    }
+} catch (error) {
+    console.error("Error al recuperar la sesión:", error);
+}
 
-                if (respuesta.status === 404) {
-                    mostrarError("No se encontró la mascota solicitada.");
-                    return;
-                }
+if (!usuarioActual || !usuarioActual.idUsuario) {
+    sessionStorage.removeItem("pettoUsuario");
+    localStorage.removeItem("pettoUsuario");
+    window.location.replace("login.html");
+} else {
+    document.addEventListener("DOMContentLoaded", cargarFicha);
+}
 
-                if (!respuesta.ok) {
-                    throw new Error("La API devolvió un error.");
-                }
+// ========================================
+// 2. MOSTRAR MENSAJES DE ERROR
+// ========================================
 
-                mascotaActual = await respuesta.json();
-                const mascota = mascotaActual;
+function mostrarError(texto) {
+    const mensaje = document.getElementById("mensajeFicha");
 
-                document.getElementById("tituloMascota").textContent =
-                    "🐾 Información de " + (mascota.nombre || "tu mascota");
+    if (mensaje) {
+        mensaje.textContent = texto;
+        mensaje.className = "alert alert-danger";
+    } else {
+        alert(texto);
+    }
+}
 
-                document.getElementById("nombreMascota").textContent =
-                    mascota.nombre || "Sin nombre";
+// ========================================
+// 3. CARGAR LA FICHA DE LA MASCOTA
+// ========================================
 
-                document.getElementById("descripcionMascota").textContent =
-                    mascota.caracteristicas || "Sin descripción registrada.";
+async function cargarFicha() {
+    const parametros = new URLSearchParams(window.location.search);
+    const id = parametros.get("id");
 
-                document.getElementById("especieMascota").textContent =
-                    mascota.especie || "Sin registrar";
+    // Validar el ID recibido en la URL.
+    if (!id || !/^\d+$/.test(id) || Number(id) < 1) {
+        mostrarError("No se indicó un ID de mascota válido.");
+        return;
+    }
 
-                document.getElementById("razaMascota").textContent =
-                    mascota.raza || "Sin registrar";
+    try {
+        const respuesta = await fetch(
+            `${API_MASCOTAS}/${encodeURIComponent(id)}`
+        );
 
-                document.getElementById("sexoMascota").textContent =
-                    mascota.sexo || "Sin registrar";
+        if (respuesta.status === 404) {
+            mostrarError("No se encontró la mascota solicitada.");
+            return;
+        }
 
-                document.getElementById("colorMascota").textContent =
-                    mascota.color || "Sin registrar";
+        if (!respuesta.ok) {
+            throw new Error("La API devolvió un error.");
+        }
 
-                document.getElementById("edadMascota").textContent =
-                    calcularEdad(mascota.fechaNacimiento);
+        mascotaActual = await respuesta.json();
 
-                document.getElementById("caracteristicasMascota").textContent =
-                    mascota.caracteristicas || "No hay características registradas.";
+        // Verificar que la mascota corresponda al usuario conectado.
+        if (
+            Number(mascotaActual.idUsuario) !==
+            Number(usuarioActual.idUsuario)
+        ) {
+            mascotaActual = null;
 
-                const estado = (mascota.estado || "").toUpperCase();
-                const etiquetaEstado =
-                    document.querySelector(".estado-mascota");
+            mostrarError(
+                "No tenés permiso para consultar esta mascota."
+            );
 
-                if (etiquetaEstado) {
-                    etiquetaEstado.textContent = estado || "Sin estado";
-                    etiquetaEstado.classList.remove("estado-encontrada");
+            return;
+        }
 
-                    if (estado === "ENCONTRADA") {
-                        etiquetaEstado.classList.add("estado-encontrada");
-                    }
-                }
+        const mascota = mascotaActual;
 
-                // El peso solo se mostrará si existe en la base de datos.
-                const tarjetasSalud = document.querySelectorAll(".salud-card");
+        // Mostrar los datos principales.
+        document.getElementById("tituloMascota").textContent =
+            "🐾 Información de " + (mascota.nombre || "tu mascota");
 
-                if (tarjetasSalud.length > 1) {
-                    tarjetasSalud[1].querySelector("strong").textContent =
-                        mascota.peso != null
-                            ? mascota.peso + " kg"
-                            : "Sin registrar";
-                }
+        document.getElementById("nombreMascota").textContent =
+            mascota.nombre || "Sin nombre";
 
-            } catch (error) {
-                console.error("Error al cargar la ficha:", error);
-                mostrarError(
-                    "No se pudieron cargar los datos. Verificá que el backend esté funcionando."
-                );
-            }
+        document.getElementById("descripcionMascota").textContent =
+            mascota.caracteristicas || "Sin descripción registrada.";
 
-            function mostrarError(texto) {
-                mensaje.textContent = texto;
-                mensaje.className = "alert alert-danger";
+        document.getElementById("especieMascota").textContent =
+            mascota.especie || "Sin registrar";
+
+        document.getElementById("razaMascota").textContent =
+            mascota.raza || "Sin registrar";
+
+        document.getElementById("sexoMascota").textContent =
+            mascota.sexo || "Sin registrar";
+
+        document.getElementById("colorMascota").textContent =
+            mascota.color || "Sin registrar";
+
+        document.getElementById("edadMascota").textContent =
+            calcularEdad(mascota.fechaNacimiento);
+
+        document.getElementById("caracteristicasMascota").textContent =
+            mascota.caracteristicas || "No hay características registradas.";
+
+        // Mostrar el estado actual.
+        const estado = (mascota.estado || "").toUpperCase();
+        const etiquetaEstado = document.querySelector(".estado-mascota");
+
+        if (etiquetaEstado) {
+            etiquetaEstado.textContent = estado || "Sin estado";
+            etiquetaEstado.classList.remove("estado-encontrada");
+
+            if (estado === "ENCONTRADA") {
+                etiquetaEstado.classList.add("estado-encontrada");
             }
         }
 
-        function calcularEdad(fechaNacimiento) {
-            if (!fechaNacimiento) return "Sin registrar";
+        // Mostrar el peso guardado, si existe.
+        const tarjetasSalud = document.querySelectorAll(".salud-card");
 
-            const nacimiento = new Date(fechaNacimiento);
+        if (tarjetasSalud.length > 1) {
+            const peso = tarjetasSalud[1].querySelector("strong");
 
-            if (Number.isNaN(nacimiento.getTime())) {
-                return "Sin registrar";
+            if (peso) {
+                peso.textContent =
+                    mascota.peso != null
+                        ? mascota.peso + " kg"
+                        : "Sin registrar";
             }
-
-            const hoy = new Date();
-            let edad = hoy.getFullYear() - nacimiento.getFullYear();
-
-            const aunNoCumplio =
-                hoy.getMonth() < nacimiento.getMonth() ||
-                (hoy.getMonth() === nacimiento.getMonth() &&
-                hoy.getDate() < nacimiento.getDate());
-
-            if (aunNoCumplio) edad--;
-
-            return edad < 0 ? "Sin registrar" : edad + " años";
         }
 
-        
+        // Ocultar mensajes anteriores si la carga fue correcta.
+        const mensaje = document.getElementById("mensajeFicha");
+
+        if (mensaje) {
+            mensaje.textContent = "";
+            mensaje.className = "alert d-none";
+        }
+
+    } catch (error) {
+        console.error("Error al cargar la ficha:", error);
+
+        mostrarError(
+            "No se pudieron cargar los datos. Verificá que el backend esté funcionando."
+        );
+    }
+}
+
+// ========================================
+// 4. CALCULAR LA EDAD
+// ========================================
+
+function calcularEdad(fechaNacimiento) {
+    if (!fechaNacimiento) {
+        return "Sin registrar";
+    }
+
+    const nacimiento = new Date(fechaNacimiento);
+
+    if (Number.isNaN(nacimiento.getTime())) {
+        return "Sin registrar";
+    }
+
+    const hoy = new Date();
+
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+
+    const aunNoCumplio =
+        hoy.getMonth() < nacimiento.getMonth() ||
+        (
+            hoy.getMonth() === nacimiento.getMonth() &&
+            hoy.getDate() < nacimiento.getDate()
+        );
+
+    if (aunNoCumplio) {
+        edad--;
+    }
+
+    return edad < 0 ? "Sin registrar" : edad + " años";
+}
+
+// ========================================
+// 5. PREPARAR EL FORMULARIO DE EDICIÓN
+// ========================================
+
 const botonEditar = document.querySelector(".btn-editar");
 const formularioEdicion = document.getElementById("formularioEdicion");
 const formEditar = document.getElementById("formEditarMascota");
+const botonCancelar = document.getElementById("cancelarEdicion");
 
-botonEditar.addEventListener("click", function () {
-    if (!mascotaActual) return;
+if (botonEditar && formularioEdicion) {
+    botonEditar.addEventListener("click", function () {
+        if (!mascotaActual) {
+            return;
+        }
 
-    document.getElementById("editarNombre").value =
-        mascotaActual.nombre || "";
-    document.getElementById("editarEspecie").value =
-        mascotaActual.especie || "";
-    document.getElementById("editarRaza").value =
-        mascotaActual.raza || "";
-    document.getElementById("editarSexo").value =
-        mascotaActual.sexo || "";
-    document.getElementById("editarFecha").value =
-        mascotaActual.fechaNacimiento
-            ? mascotaActual.fechaNacimiento.substring(0, 10)
-            : "";
-    document.getElementById("editarColor").value =
-        mascotaActual.color || "";
-    document.getElementById("editarTamaño").value =
-        mascotaActual.tamaño || "";
-    document.getElementById("editarPeso").value =
-        mascotaActual.peso ?? "";
-    document.getElementById("editarCaracteristicas").value =
-        mascotaActual.caracteristicas || "";
+        document.getElementById("editarNombre").value =
+            mascotaActual.nombre || "";
 
-    formularioEdicion.hidden = false;
-});
+        document.getElementById("editarEspecie").value =
+            mascotaActual.especie || "";
 
-document.getElementById("cancelarEdicion").addEventListener("click", () => {
-    formularioEdicion.hidden = true;
-});
+        document.getElementById("editarRaza").value =
+            mascotaActual.raza || "";
 
-formEditar.addEventListener("submit", async function (event) {
-    event.preventDefault();
+        document.getElementById("editarSexo").value =
+            mascotaActual.sexo || "";
 
-    if (!mascotaActual) return;
+        document.getElementById("editarFecha").value =
+            mascotaActual.fechaNacimiento
+                ? mascotaActual.fechaNacimiento.substring(0, 10)
+                : "";
 
-    const datos = {
-        idUsuario: mascotaActual.idUsuario,
-        nombre: document.getElementById("editarNombre").value.trim(),
-        especie: document.getElementById("editarEspecie").value.trim(),
-        raza: document.getElementById("editarRaza").value.trim() || null,
-        sexo: document.getElementById("editarSexo").value.trim() || null,
-        fechaNacimiento:
-            document.getElementById("editarFecha").value || null,
-        color: document.getElementById("editarColor").value.trim() || null,
-        tamaño: document.getElementById("editarTamaño").value.trim() || null,
-        peso: document.getElementById("editarPeso").value === ""
-            ? null
-            : Number(document.getElementById("editarPeso").value),
-        caracteristicas:
-            document.getElementById("editarCaracteristicas").value.trim() || null
-    };
+        document.getElementById("editarColor").value =
+            mascotaActual.color || "";
 
-            try {
-                const respuesta = await fetch(
-                    `${API_MASCOTAS}/${mascotaActual.idMascota}`,
-                    {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(datos)
-                    }
-                );
+        document.getElementById("editarTamaño").value =
+            mascotaActual.tamaño || "";
 
-                const resultado = await respuesta.json();
+        document.getElementById("editarPeso").value =
+            mascotaActual.peso ?? "";
 
-                if (!respuesta.ok) {
-                    alert(resultado.mensaje || "No se pudieron guardar los cambios.");
-                    return;
+        document.getElementById("editarCaracteristicas").value =
+            mascotaActual.caracteristicas || "";
+
+        formularioEdicion.hidden = false;
+    });
+}
+
+// ========================================
+// 6. CANCELAR LA EDICIÓN
+// ========================================
+
+if (botonCancelar && formularioEdicion) {
+    botonCancelar.addEventListener("click", function () {
+        formularioEdicion.hidden = true;
+    });
+}
+
+// ========================================
+// 7. GUARDAR LOS CAMBIOS DE LA MASCOTA
+// ========================================
+
+if (formEditar) {
+    formEditar.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (!mascotaActual) {
+            return;
+        }
+
+        const datos = {
+            idUsuario: mascotaActual.idUsuario,
+            nombre: document.getElementById("editarNombre").value.trim(),
+            especie: document.getElementById("editarEspecie").value.trim(),
+            raza: document.getElementById("editarRaza").value.trim() || null,
+            sexo: document.getElementById("editarSexo").value.trim() || null,
+            fechaNacimiento:
+                document.getElementById("editarFecha").value || null,
+            color:
+                document.getElementById("editarColor").value.trim() || null,
+            tamaño:
+                document.getElementById("editarTamaño").value.trim() || null,
+            peso:
+                document.getElementById("editarPeso").value === ""
+                    ? null
+                    : Number(document.getElementById("editarPeso").value),
+            caracteristicas:
+                document.getElementById("editarCaracteristicas").value.trim() ||
+                null
+        };
+
+        try {
+            const respuesta = await fetch(
+                `${API_MASCOTAS}/${mascotaActual.idMascota}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
                 }
-
-                alert("¡Información actualizada correctamente!");
-                window.location.reload();
-
-            } catch (error) {
-                console.error(error);
-                alert("No se pudo conectar con el servidor.");
-            }
-        });
-
-        document.getElementById("eliminarMascota").addEventListener("click", async () => {
-            if (!mascotaActual) return;
-
-            const confirmar = confirm(
-                `¿Seguro que querés eliminar a ${mascotaActual.nombre}? Esta acción no se puede deshacer.`
             );
 
-            if (!confirmar) return;
+            const resultado = await respuesta.json().catch(() => ({}));
 
-            try {
-                const respuesta = await fetch(
-                    `${API_MASCOTAS}/${mascotaActual.idMascota}`,
-                    { method: "DELETE" }
+            if (!respuesta.ok) {
+                alert(
+                    resultado.mensaje ||
+                    "No se pudieron guardar los cambios."
                 );
-
-                const resultado = await respuesta.json();
-
-                if (!respuesta.ok) {
-                    alert(resultado.mensaje || "No se pudo eliminar la mascota.");
-                    return;
-                }
-
-                alert("Mascota eliminada correctamente.");
-                window.location.href = "mascotas.html";
-
-            } catch (error) {
-                console.error(error);
-                alert("No se pudo conectar con el servidor.");
+                return;
             }
-        });
+
+            alert("¡Información actualizada correctamente!");
+            window.location.reload();
+
+        } catch (error) {
+            console.error("Error al editar la mascota:", error);
+
+            alert("No se pudo conectar con el servidor.");
+        }
+    });
+}
+
+// ========================================
+// 8. ELIMINAR LA MASCOTA
+// ========================================
+
+const botonEliminar = document.getElementById("eliminarMascota");
+
+if (botonEliminar) {
+    botonEliminar.addEventListener("click", async function () {
+        if (!mascotaActual) {
+            return;
+        }
+
+        const confirmar = confirm(
+            `¿Seguro que querés eliminar a ${mascotaActual.nombre}? Esta acción no se puede deshacer.`
+        );
+
+        if (!confirmar) {
+            return;
+        }
+
+        try {
+            const respuesta = await fetch(
+                `${API_MASCOTAS}/${mascotaActual.idMascota}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            const resultado = await respuesta.json().catch(() => ({}));
+
+            if (!respuesta.ok) {
+                alert(
+                    resultado.mensaje ||
+                    "No se pudo eliminar la mascota."
+                );
+                return;
+            }
+
+            alert("Mascota eliminada correctamente.");
+            window.location.href = "mascotas.html";
+
+        } catch (error) {
+            console.error("Error al eliminar la mascota:", error);
+
+            alert("No se pudo conectar con el servidor.");
+        }
+    });
+}
+
 
     </script>
 

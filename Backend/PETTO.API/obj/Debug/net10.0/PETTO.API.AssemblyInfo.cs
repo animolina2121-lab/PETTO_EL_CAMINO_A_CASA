@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("a78158fe-d28f-42e2-8a9c-22afd2685c8a")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("PETTO.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4299cc51377471bbabbd30b89d9196a1af1147a5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2946e319ebab476ca5e3c999f6478cc912d6b799")]
 [assembly: System.Reflection.AssemblyProductAttribute("PETTO.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PETTO.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

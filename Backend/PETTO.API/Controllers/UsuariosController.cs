@@ -1,9 +1,14 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PETTO.API.Data;
 using PETTO.API.DTOs;
 using PETTO.API.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace PETTO.API.Controllers
 {
@@ -14,9 +19,14 @@ namespace PETTO.API.Controllers
         private readonly PettoDbContext _context;
         private readonly PasswordHasher<Usuario> _passwordHasher = new();
 
-        public UsuariosController(PettoDbContext context)
+        private readonly IConfiguration _configuration;
+
+        public UsuariosController(
+            PettoDbContext context,
+            IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
 
@@ -128,7 +138,54 @@ namespace PETTO.API.Controllers
                 });
             }
 
-            // 3. Devolver solo los datos necesarios para continuar.
+            
+            // 3. Obtener la configuración JWT.
+            var jwtKey = _configuration["Jwt:Key"]
+                ?? throw new InvalidOperationException(
+                    "No se encontró Jwt:Key en User Secrets.");
+
+            var issuer = _configuration["Jwt:Issuer"]
+                ?? throw new InvalidOperationException(
+                    "No se encontró Jwt:Issuer en la configuración.");
+
+            var audience = _configuration["Jwt:Audience"]
+                ?? throw new InvalidOperationException(
+                    "No se encontró Jwt:Audience en la configuración.");
+
+            var keyBytes = Convert.FromBase64String(jwtKey);
+
+            // 4. Crear los datos de identidad del usuario.
+            var claims = new[]
+            {
+                new Claim(
+                    ClaimTypes.NameIdentifier,
+                    usuario.IdUsuario.ToString()),
+
+                new Claim(ClaimTypes.Name, usuario.Nombre),
+
+                new Claim(ClaimTypes.Email, usuario.Email),
+
+                new Claim(ClaimTypes.Role, usuario.Rol ?? "usuario")
+            };
+
+            // 5. Firmar el token y establecer su vencimiento.
+            var signingKey = new SymmetricSecurityKey(keyBytes);
+
+            var credentials = new SigningCredentials(
+                signingKey,
+                SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: credentials);
+
+            var tokenGenerado =
+                new JwtSecurityTokenHandler().WriteToken(token);
+
+            // 6. Devolver el token junto con los datos del usuario.
             return Ok(new
             {
                 mensaje = "Inicio de sesión correcto.",
@@ -138,9 +195,11 @@ namespace PETTO.API.Controllers
                     nombre = usuario.Nombre,
                     apellido = usuario.Apellido,
                     email = usuario.Email,
-                    rol = usuario.Rol
+                    rol = usuario.Rol,
+                    token = tokenGenerado
                 }
             });
+
         }
     }
 }
