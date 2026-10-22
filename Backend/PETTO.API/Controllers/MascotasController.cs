@@ -65,7 +65,7 @@ namespace PETTO.API.Controllers
             [FromBody] CrearMascotaDto datos)
         {
             var usuarioExiste = await _context.Usuarios
-                .AnyAsync(u => u.IdUsuario == datos.IdUsuario);
+                .AnyAsync(u => u.IdUsuario == ObtenerIdUsuarioAutenticado());
 
             if (!usuarioExiste)
                 return BadRequest(new { mensaje = "El usuario indicado no existe." });

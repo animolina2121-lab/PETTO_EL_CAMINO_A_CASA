@@ -4,11 +4,7 @@ namespace PETTO.API.DTOs
 {
     public class CrearMascotaDto
     {
-        // TEMPORAL: se elimina cuando exista login con JWT
-        [Range(1, int.MaxValue)]
-        public int IdUsuario { get; set; }
-
-        [Required, StringLength(100)]
+     [Required, StringLength(100)]
         public string Nombre { get; set; } = string.Empty;
 
         [Required, StringLength(50)]
