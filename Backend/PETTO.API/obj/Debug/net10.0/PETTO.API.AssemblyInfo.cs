@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PETTO.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2946e319ebab476ca5e3c999f6478cc912d6b799")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c63a023ff882c5d38c63ce7d036259bf142a821")]
 [assembly: System.Reflection.AssemblyProductAttribute("PETTO.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PETTO.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

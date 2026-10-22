@@ -1,4 +1,6 @@
 
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PETTO.API.Data;
@@ -9,6 +11,8 @@ namespace PETTO.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
+
     public class MascotasController : ControllerBase
     {
         private readonly PettoDbContext _context;
@@ -18,11 +22,26 @@ namespace PETTO.API.Controllers
             _context = context;
         }
 
+        private int ObtenerIdUsuarioAutenticado()
+        {
+            var id=User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(id, out int idUsuario))
+            {
+                throw new UnauthorizedAccessException("No se pudo identificar el usuario autenticado.");
+            }
+
+            return idUsuario;
+        }
+
         // GET: api/Mascotas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mascota>>> ObtenerMascotas()
         {
-            var mascotas = await _context.Mascotas.ToListAsync();
+            var idUsuario = ObtenerIdUsuarioAutenticado();
+            var mascotas = await _context.Mascotas
+            .Where(m => m.IdUsuario == idUsuario)
+            .ToListAsync();
             return Ok(mascotas);
         }
 
@@ -30,7 +49,9 @@ namespace PETTO.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Mascota>> ObtenerMascota(int id)
         {
-            var mascota = await _context.Mascotas.FindAsync(id);
+            var idUsuario = ObtenerIdUsuarioAutenticado();
+            var mascota = await _context.Mascotas
+                .FirstOrDefaultAsync(m => m.IdMascota == id && m.IdUsuario == idUsuario);
 
             if (mascota == null)
                 return NotFound(new { mensaje = "Mascota no encontrada." });
@@ -51,7 +72,7 @@ namespace PETTO.API.Controllers
 
             var mascota = new Mascota
             {
-                IdUsuario = datos.IdUsuario,
+                IdUsuario = ObtenerIdUsuarioAutenticado(),
                 Nombre = datos.Nombre.Trim(),
                 Especie = datos.Especie.Trim(),
                 Raza = datos.Raza?.Trim(),
@@ -79,8 +100,10 @@ namespace PETTO.API.Controllers
             int id,
             [FromBody] CrearMascotaDto datos)
         {
+            var idUsuario = ObtenerIdUsuarioAutenticado();
             var mascota = await _context.Mascotas
-                .FirstOrDefaultAsync(m => m.IdMascota == id);
+                .FirstOrDefaultAsync(m => m.IdMascota == id && m.IdUsuario == idUsuario);
+
 
             if (mascota == null)
                 return NotFound(new { mensaje = "No se encontró la mascota." });
@@ -108,8 +131,9 @@ namespace PETTO.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarMascota(int id)
         {
+            var idUsuario = ObtenerIdUsuarioAutenticado();
             var mascota = await _context.Mascotas
-                .FirstOrDefaultAsync(m => m.IdMascota == id);
+                .FirstOrDefaultAsync(m => m.IdMascota == id && m.IdUsuario == idUsuario);
 
             if (mascota == null)
                 return NotFound(new { mensaje = "No se encontró la mascota." });

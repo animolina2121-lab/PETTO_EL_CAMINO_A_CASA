@@ -3785,3 +3785,78 @@ body {
 .caracteristicas-box {
     background-color: rgba(112, 214, 255, 0.1);
 }
+
+/* LOGO OFICIAL PETTO */
+.petto-logo-icon {
+    flex-shrink: 0;
+    display: block;
+}
+
+.logo-petto {
+    color: #303030;
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1.1;
+}
+
+.lema {
+    color: #303030;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+}
+
+/* =====================================
+   ICONOS DEL MENU PETTO
+===================================== */
+
+.menu-icono {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-item:hover .menu-icono {
+    transform: scale(1.08);
+}
+
+/* LOGO DE LA BARRA LATERAL PETTO */
+.sidebar-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.sidebar-marca .petto-logo-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+}
+
+.sidebar-logo .logo-petto {
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.sidebar-logo p {
+    margin-top: 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
