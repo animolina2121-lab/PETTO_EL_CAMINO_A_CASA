@@ -258,5 +258,233 @@ namespace PETTO.API.Controllers
             });
         }
 
+        // ========================================
+        // PUT: api/Avistamientos/1
+        // EDITAR AVISTAMIENTO
+        // ========================================
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditarAvistamiento(
+            int id,
+            [FromBody] EditarAvistamientoDto datos)
+        {
+            var idUsuarioTexto =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(idUsuarioTexto, out int idUsuario))
+            {
+                return Unauthorized(new
+                {
+                    mensaje = "No se pudo identificar al usuario autenticado."
+                });
+            }
+
+            var avistamiento = await _context.Avistamientos
+                .FirstOrDefaultAsync(a =>
+                    a.IdAvistamiento == id &&
+                    a.IdUsuario == idUsuario);
+
+            if (avistamiento == null)
+            {
+                return NotFound(new
+                {
+                    mensaje = "El avistamiento no existe o no pertenece al usuario."
+                });
+            }
+
+            if (datos.Fecha == null || datos.Hora == null)
+            {
+                return BadRequest(new
+                {
+                    mensaje = "La fecha y la hora son obligatorias."
+                });
+            }
+
+            if (datos.Fecha.Value.Date > DateTime.Today)
+            {
+                return BadRequest(new
+                {
+                    mensaje = "La fecha del avistamiento no puede ser futura."
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(datos.Ubicacion))
+            {
+                return BadRequest(new
+                {
+                    mensaje = "Debes indicar una ubicación."
+                });
+            }
+
+            if (datos.Latitud is < -90 or > 90 ||
+                datos.Longitud is < -180 or > 180)
+            {
+                return BadRequest(new
+                {
+                    mensaje = "Las coordenadas no son válidas."
+                });
+            }
+
+            avistamiento.Fecha = datos.Fecha.Value;
+            avistamiento.Hora = datos.Hora.Value;
+            avistamiento.Ubicacion = datos.Ubicacion.Trim();
+            avistamiento.Latitud = datos.Latitud;
+            avistamiento.Longitud = datos.Longitud;
+            avistamiento.Descripcion = datos.Descripcion?.Trim();
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                mensaje = "Avistamiento actualizado correctamente."
+            });
+        }
+
+        // ========================================
+        // DELETE: api/Avistamientos/1
+        // ELIMINAR AVISTAMIENTO
+        // ========================================
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarAvistamiento(
+            int id,
+            [FromServices] IWebHostEnvironment entorno)
+        {
+            var idUsuarioTexto =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(idUsuarioTexto, out int idUsuario))
+            {
+                return Unauthorized(new
+                {
+                    mensaje = "No se pudo identificar al usuario autenticado."
+                });
+            }
+
+            var avistamiento = await _context.Avistamientos
+                .FirstOrDefaultAsync(a =>
+                    a.IdAvistamiento == id &&
+                    a.IdUsuario == idUsuario);
+
+            if (avistamiento == null)
+            {
+                return NotFound(new
+                {
+                    mensaje = "El avistamiento no existe o no pertenece al usuario."
+                });
+            }
+
+            var fotografias = await _context.FotosAvistamientos
+                .Where(f => f.IdAvistamiento == id)
+                .ToListAsync();
+
+            // Guardar las rutas para eliminar los archivos
+            // después de confirmar los cambios en SQL Server.
+            var rutasFotografias = fotografias
+                .Select(f => f.RutaFoto)
+                .ToList();
+
+            _context.FotosAvistamientos.RemoveRange(fotografias);
+            _context.Avistamientos.Remove(avistamiento);
+
+            await _context.SaveChangesAsync();
+
+            // Eliminar los archivos físicos del avistamiento.
+            var carpeta = Path.Combine(
+                entorno.WebRootPath ??
+                    Path.Combine(entorno.ContentRootPath, "wwwroot"),
+                "fotos",
+                "avistamientos"
+            );
+
+            foreach (var ruta in rutasFotografias)
+            {
+            // Solo aceptar nombres de archivo dentro de la
+            // carpeta específica de fotografías de avistamientos.
+            if (string.IsNullOrWhiteSpace(ruta) ||
+                !ruta.StartsWith(
+                    "/fotos/avistamientos/",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            var nombreArchivo = Path.GetFileName(ruta);
+
+            if (string.IsNullOrWhiteSpace(nombreArchivo))
+            {
+                continue;
+            }
+
+            var rutaFisica = Path.Combine(carpeta, nombreArchivo);
+
+            try
+            {
+                if (System.IO.File.Exists(rutaFisica))
+                {
+                    System.IO.File.Delete(rutaFisica);
+                }
+            }
+            catch (IOException error)
+            {
+                Console.WriteLine(
+                    "No se pudo eliminar una fotografía: " + error.Message);
+            }
+            catch (UnauthorizedAccessException error)
+            {
+                Console.WriteLine(
+                    "Sin permiso para eliminar una fotografía: " + error.Message);
+            }
+        }
+
+        return Ok(new
+        {
+            mensaje = "Avistamiento eliminado correctamente."
+        });
+    }
+
+        // GET: api/Avistamientos/mapa
+        [HttpGet("mapa")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ObtenerAvistamientosMapa()
+        {
+            var avistamientos = await (
+                from avistamiento in _context.Avistamientos.AsNoTracking()
+
+                join reporte in _context.ReportesExtravio.AsNoTracking()
+                    on avistamiento.IdReporte equals reporte.IdReporte
+
+                join mascota in _context.Mascotas.AsNoTracking()
+                    on reporte.IdMascota equals mascota.IdMascota
+
+                where reporte.Estado == "ACTIVO"
+                    && avistamiento.Latitud != null
+                    && avistamiento.Longitud != null
+
+                select new
+                {
+                    avistamiento.IdAvistamiento,
+                    avistamiento.IdReporte,
+                    reporte.IdMascota,
+
+                    mascota.Nombre,
+                    mascota.Especie,
+                    mascota.Raza,
+
+                    avistamiento.Fecha,
+                    avistamiento.Hora,
+                    avistamiento.Ubicacion,
+                    avistamiento.Latitud,
+                    avistamiento.Longitud,
+                    avistamiento.Descripcion,
+
+                    RutaFoto = _context.FotosAvistamientos
+                        .Where(f => f.IdAvistamiento == avistamiento.IdAvistamiento)
+                        .OrderBy(f => f.IdFoto)
+                        .Select(f => f.RutaFoto)
+                        .FirstOrDefault()
+                }
+            ).ToListAsync();
+
+            return Ok(avistamientos);
+        }
     }
 }

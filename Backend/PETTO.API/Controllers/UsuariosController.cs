@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PETTO.API.Controllers
 {
@@ -52,6 +53,127 @@ namespace PETTO.API.Controllers
 
             return Ok(usuario);
         }
+
+
+        // GET: api/Usuarios/perfil
+        // Devuelve los datos del usuario autenticado.
+        [Authorize]
+        [HttpGet("perfil")]
+        public async Task<IActionResult> ObtenerPerfil()
+        {
+            var idTexto = User.FindFirstValue(
+                ClaimTypes.NameIdentifier
+            );
+
+            if (!int.TryParse(idTexto, out int idUsuario))
+            {
+                return Unauthorized(new
+                {
+                    mensaje = "La sesión no es válida."
+                });
+            }
+
+            var usuario = await _context.Usuarios
+                .Where(u => u.IdUsuario == idUsuario)
+                .Select(u => new
+                {
+                    u.IdUsuario,
+                    u.Nombre,
+                    u.Apellido,
+                    u.Dni,
+                    u.Email,
+                    u.Telefono,
+                    u.Domicilio,
+                    u.Rol,
+                    u.FechaRegistro
+                })
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+            {
+                return NotFound(new
+                {
+                    mensaje = "Usuario no encontrado."
+                });
+            }
+
+            return Ok(usuario);
+        }
+
+
+        // PUT: api/Usuarios/perfil
+        // Actualiza los datos del usuario autenticado.
+        [Authorize]
+        [HttpPut("perfil")]
+        public async Task<IActionResult> ActualizarPerfil(
+            [FromBody] ActualizarPerfilDto datos)
+        {
+            var idTexto = User.FindFirstValue(
+                ClaimTypes.NameIdentifier
+            );
+
+            if (!int.TryParse(idTexto, out int idUsuario))
+            {
+                return Unauthorized(new
+                {
+                    mensaje = "La sesión no es válida."
+                });
+            }
+
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(
+                    u => u.IdUsuario == idUsuario
+                );
+
+            if (usuario == null)
+            {
+                return NotFound(new
+                {
+                    mensaje = "Usuario no encontrado."
+                });
+            }
+
+            var email = datos.Email.Trim();
+
+            bool emailOcupado = await _context.Usuarios
+                .AnyAsync(u =>
+                    u.Email == email &&
+                    u.IdUsuario != idUsuario
+                );
+
+            if (emailOcupado)
+            {
+                return Conflict(new
+                {
+                    mensaje = "Ese correo electrónico ya está registrado."
+                });
+            }
+
+            usuario.Nombre = datos.Nombre.Trim();
+            usuario.Apellido = datos.Apellido.Trim();
+            usuario.Dni = datos.Dni.Trim();
+            usuario.Email = email;
+            usuario.Telefono = datos.Telefono?.Trim();
+            usuario.Domicilio = datos.Domicilio?.Trim();
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                mensaje = "Perfil actualizado correctamente.",
+                usuario = new
+                {
+                    usuario.IdUsuario,
+                    usuario.Nombre,
+                    usuario.Apellido,
+                    usuario.Dni,
+                    usuario.Email,
+                    usuario.Telefono,
+                    usuario.Domicilio
+                }
+            });
+        }
+
 
         // POST: api/Usuarios
         [HttpPost]

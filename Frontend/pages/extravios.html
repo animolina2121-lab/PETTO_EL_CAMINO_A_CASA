@@ -30,21 +30,112 @@
             </div>
 
             <nav class="menu">
-                <a href="dashboard.html" class="menu-item">Inicio</a>
-                <a href="mascotas.html" class="menu-item">Mis mascotas</a>
-                 <a href="buscar.html"class="menu-item">Buscar mascotas</a>
-                <a href="extravio.html" class="menu-item">Reportar extravío</a>
-                <a href="extravios.html" class="menu-item activo">Reportes de extravío</a>
-                <a href="avistamiento.html" class="menu-item">Avistamientos</a>
-                <a href="avistamientos.html" class="menu-item">Avistamientos registrados</a>
-                <a href="mapa.html" class="menu-item">Mapa</a>
-                <a href="perfil.html" class="menu-item">Mi perfil</a>
-            </nav>
 
-            <div class="sidebar-footer">
-                <a href="login.html" class="menu-item cerrar-sesion">Cerrar sesión</a>
-            </div>
-        </aside>
+    <!-- INICIO -->
+    <a href="dashboard.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5.5 9.5V21h13V9.5"></path>
+            <path d="M9.5 21v-7h5v7"></path>
+        </svg>
+        <span>Inicio</span>
+    </a>
+
+    <!-- MIS MASCOTAS -->
+    <a href="mascotas.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <ellipse cx="5.5" cy="7" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="11" cy="4.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="17" cy="5.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="20" cy="10" rx="2" ry="2.5"></ellipse>
+            <path d="M12 10c-3.5 0-7 4-7 7a3 3 0 0 0 4 2.8l3-1 3 1A3 3 0 0 0 19 17c0-3-3.5-7-7-7Z"></path>
+        </svg>
+        <span>Mis mascotas</span>
+    </a>
+
+    <!-- BUSCAR MASCOTAS -->
+    <a href="buscar.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+            <path d="m16 16 5 5"></path>
+        </svg>
+        <span>Buscar mascotas</span>
+    </a>
+
+    <!-- REPORTAR EXTRAVÍO -->
+    <a href="extravio.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 22 20H2L12 3Z"></path>
+            <path d="M12 9v5"></path>
+            <path d="M12 17.5h.01"></path>
+        </svg>
+        <span>Reportar extravío</span>
+    </a>
+
+    <!-- REPORTES DE EXTRAVÍO -->
+    <a href="extravios.html" class="menu-item activo" aria-current="page">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+            <path d="M9 8h6"></path>
+            <path d="M9 12h6"></path>
+            <path d="M9 16h4"></path>
+        </svg>
+        <span>Reportes de extravío</span>
+    </a>
+
+    <!-- AVISTAMIENTOS -->
+    <a href="avistamiento.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+        </svg>
+        <span>Avistamientos</span>
+    </a>
+
+    <!-- AVISTAMIENTOS REGISTRADOS -->
+    <a href="avistamientos.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span>Avistamientos registrados</span>
+    </a>
+
+    <!-- MAPA -->
+    <a href="mapa.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
+            <path d="M9 3v15"></path>
+            <path d="M15 6v15"></path>
+        </svg>
+        <span>Mapa</span>
+    </a>
+
+    <!-- MI PERFIL -->
+    <a href="perfil.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21a8 8 0 0 1 16 0"></path>
+        </svg>
+        <span>Mi perfil</span>
+    </a>
+
+   <div class="sidebar-footer">
+    <a href="login.html" class="menu-item cerrar-sesion">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 17l5-5-5-5"></path>
+            <path d="M15 12H3"></path>
+            <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"></path>
+        </svg>
+        <span>Cerrar sesión</span>
+    </a>
+</div>
+
+        </nav>
+    </aside>
+
+</nav>
+         
 
         <main class="contenido-dashboard">
             <header class="pagina-header">
@@ -75,6 +166,84 @@
                     </div>
                 </div>
             </section>
+
+            <!-- FORMULARIO PARA EDITAR REPORTES -->
+            <dialog id="dialogEditarReporte"
+                    class="border-0 rounded-4 shadow p-4"
+                    style="width: min(95%, 520px);">
+
+                <h2 class="h4 mb-3">✏️ Editar reporte de extravío</h2>
+
+                <form id="formEditarReporte">
+
+                    <input type="hidden" id="editarIdReporte">
+
+                    <div class="mb-3">
+                        <label for="editarFecha" class="form-label">Fecha</label>
+                        <input type="date" id="editarFecha"
+                            class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editarHora" class="form-label">Hora</label>
+                        <input type="time" id="editarHora"
+                            class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editarUbicacion" class="form-label">Ubicación</label>
+                        <input type="text" id="editarUbicacion"
+                            class="form-control" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editarLatitud" class="form-label">Latitud</label>
+                            <input type="number" id="editarLatitud"
+                                class="form-control" step="any"
+                                min="-90" max="90">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="editarLongitud" class="form-label">Longitud</label>
+                            <input type="number" id="editarLongitud"
+                                class="form-control" step="any"
+                                min="-180" max="180">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editarDescripcion" class="form-label">
+                            Descripción
+                        </label>
+                        <textarea id="editarDescripcion"
+                                class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editarEstado" class="form-label">
+                            Estado del reporte
+                        </label>
+                        <select id="editarEstado" class="form-select" required>
+                            <option value="ACTIVO">ACTIVO - Mascota extraviada</option>
+                            <option value="CERRADO">CERRADO - Reporte finalizado</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" id="btnCancelarEdicion"
+                                class="btn btn-secondary">
+                            Cancelar
+                        </button>
+
+                        <button type="submit" id="btnGuardarEdicion"
+                                class="btn btn-primary">
+                            Guardar cambios
+                        </button>
+                    </div>
+
+                </form>
+            </dialog>
         </main>
     </div>
 
@@ -85,6 +254,7 @@
         const listaReportes = document.getElementById("listaReportes");
         const mensajeReportes = document.getElementById("mensajeReportes");
         const btnActualizar = document.getElementById("btnActualizar");
+        let reportesDelUsuario = [];
 
         function obtenerToken() {
             const guardado =
@@ -163,7 +333,19 @@
                     throw new Error("La API devolvió un formato de datos inesperado.");
                 }
 
-                if (reportes.length === 0) {
+                // Identificar las mascotas del usuario autenticado.
+                const idsMascotasPropias = new Set(
+                    mascotas.map(mascota => Number(mascota.idMascota))
+                );
+
+                // Mostrar únicamente los reportes de esas mascotas.s
+                const reportesPropios = reportes.filter(reporte =>
+                    idsMascotasPropias.has(Number(reporte.idMascota))
+                );
+
+                reportesDelUsuario = reportesPropios;
+
+                if (reportesPropios.length === 0){
                     listaReportes.innerHTML = `
                         <div class="col-12">
                             <div class="alert alert-info">
@@ -183,7 +365,7 @@
                     ])
                 );
 
-                listaReportes.innerHTML = reportes.map(reporte => {
+                listaReportes.innerHTML = reportesPropios.map(reporte => {
                     const mascota = mascotasPorId.get(Number(reporte.idMascota));
                     const nombreMascota = mascota
                         ? mascota.nombre
@@ -239,6 +421,24 @@
                                         <strong>Descripción:</strong>
                                         ${escaparHTML(reporte.descripcion || "Sin descripción adicional")}
                                     </p>
+
+                                    <div class="d-flex flex-wrap gap-2 mt-4">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-primary flex-fill btn-editar-reporte"
+                                        data-id="${Number(reporte.idReporte)}">
+                                        ✏️ Editar
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-danger flex-fill btn-eliminar-reporte"
+                                        data-id="${Number(reporte.idReporte)}">
+                                        🗑️ Eliminar
+                                    </button>
+
+                                </div>
                                 </div>
                             </article>
                         </div>`;
@@ -251,7 +451,231 @@
                 btnActualizar.disabled = false;
             }
         }
+        // ==========================================
+        // EDITAR Y ELIMINAR REPORTES DE EXTRAVÍO
+        // ==========================================
 
+        const dialogEditarReporte =
+            document.getElementById("dialogEditarReporte");
+
+        const formEditarReporte =
+            document.getElementById("formEditarReporte");
+
+        const btnGuardarEdicion =
+            document.getElementById("btnGuardarEdicion");
+
+        document.getElementById("btnCancelarEdicion")
+            .addEventListener("click", () => {
+                dialogEditarReporte.close();
+            });
+
+
+        // ==========================================
+        // DETECTAR LOS BOTONES DE LAS TARJETAS
+        // ==========================================
+
+        listaReportes.addEventListener("click", function (evento) {
+
+            const botonEditar = evento.target.closest(".btn-editar-reporte");
+            const botonEliminar = evento.target.closest(".btn-eliminar-reporte");
+
+            if (botonEditar) {
+                const id = Number(botonEditar.dataset.id);
+                abrirEdicionReporte(id);
+            }
+
+            if (botonEliminar) {
+                const id = Number(botonEliminar.dataset.id);
+                eliminarReporte(id);
+            }
+
+        });
+
+
+        // ==========================================
+        // ABRIR FORMULARIO DE EDICIÓN
+        // ==========================================
+
+        function abrirEdicionReporte(id) {
+
+            const reporte = reportesDelUsuario.find(r =>
+                Number(r.idReporte) === id
+            );
+
+            if (!reporte) {
+                mostrarMensaje("No se encontró el reporte seleccionado.", "warning");
+                return;
+            }
+
+            document.getElementById("editarIdReporte").value =
+                reporte.idReporte;
+
+            document.getElementById("editarFecha").value =
+                reporte.fecha ? String(reporte.fecha).slice(0, 10) : "";
+
+            document.getElementById("editarHora").value =
+                reporte.hora ? String(reporte.hora).slice(0, 5) : "";
+
+            document.getElementById("editarUbicacion").value =
+                reporte.ubicacion || "";
+
+            document.getElementById("editarLatitud").value =
+                reporte.latitud ?? "";
+
+            document.getElementById("editarLongitud").value =
+                reporte.longitud ?? "";
+
+            document.getElementById("editarDescripcion").value =
+                reporte.descripcion || "";
+
+            document.getElementById("editarEstado").value =
+                String(reporte.estado || "ACTIVO").toUpperCase();
+
+            dialogEditarReporte.showModal();
+        }
+
+
+        // ==========================================
+        // GUARDAR CAMBIOS
+        // ==========================================
+
+        formEditarReporte.addEventListener("submit", async function (evento) {
+
+            evento.preventDefault();
+
+            const token = obtenerToken();
+
+            if (!token) {
+                mostrarMensaje("Debés iniciar sesión nuevamente.", "warning");
+                return;
+            }
+
+            const id = document.getElementById("editarIdReporte").value;
+
+            const fecha = document.getElementById("editarFecha").value;
+            const hora = document.getElementById("editarHora").value;
+
+            const latitudTexto =
+                document.getElementById("editarLatitud").value;
+
+            const longitudTexto =
+                document.getElementById("editarLongitud").value;
+
+            const datos = {
+                fecha: fecha,
+                hora: hora.length === 5 ? hora + ":00" : hora,
+                ubicacion: document.getElementById("editarUbicacion").value.trim(),
+                latitud: latitudTexto === "" ? null : Number(latitudTexto),
+                longitud: longitudTexto === "" ? null : Number(longitudTexto),
+                descripcion: document.getElementById("editarDescripcion").value.trim(),
+                estado: document.getElementById("editarEstado").value
+            };
+
+            btnGuardarEdicion.disabled = true;
+
+            try {
+
+                const respuesta = await fetch(
+                    API_REPORTES + "/" + id,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": "Bearer " + token,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(datos)
+                    }
+                );
+
+                const resultado = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        resultado.mensaje || "No se pudo actualizar el reporte."
+                    );
+                }
+
+                dialogEditarReporte.close();
+
+                await cargarReportes();
+
+                mostrarMensaje(
+                    "Reporte actualizado correctamente.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                console.error("Error al editar reporte:", error);
+                mostrarMensaje(error.message, "danger");
+
+            } finally {
+
+                btnGuardarEdicion.disabled = false;
+
+            }
+
+        });
+
+
+        // ==========================================
+        // ELIMINAR REPORTE
+        // ==========================================
+
+        async function eliminarReporte(id) {
+
+            const confirmado = confirm(
+                "¿Estás seguro de que querés eliminar este reporte?\n\n" +
+                "Esta acción no se puede deshacer.\n" +
+                "Los reportes con avistamientos asociados no se pueden eliminar."
+            );
+
+            if (!confirmado) {
+                return;
+            }
+
+            const token = obtenerToken();
+
+            if (!token) {
+                mostrarMensaje("Debés iniciar sesión nuevamente.", "warning");
+                return;
+            }
+
+            try {
+
+                const respuesta = await fetch(
+                    API_REPORTES + "/" + id,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        }
+                    }
+                );
+
+                const resultado = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        resultado.mensaje || "No se pudo eliminar el reporte."
+                    );
+                }
+
+                await cargarReportes();
+
+                mostrarMensaje(
+                    "Reporte eliminado correctamente.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                console.error("Error al eliminar reporte:", error);
+                mostrarMensaje(error.message, "danger");
+
+            }
+
+        }
         btnActualizar.addEventListener("click", cargarReportes);
         document.addEventListener("DOMContentLoaded", cargarReportes);
     </script>

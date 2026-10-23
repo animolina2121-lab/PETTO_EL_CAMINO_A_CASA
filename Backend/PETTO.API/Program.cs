@@ -79,6 +79,9 @@ app.UseCors("FrontendPETTO");
 
 // La autenticación debe ejecutarse antes de la autorización.
 app.UseAuthentication();
+
+app.UseStaticFiles();
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -41,47 +41,109 @@
 
         <nav class="menu">
 
-            <a href="dashboard.html"class="menu-item">
-                🏠 <span>Inicio</span>
-            </a>
+    <!-- INICIO -->
+    <a href="dashboard.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5.5 9.5V21h13V9.5"></path>
+            <path d="M9.5 21v-7h5v7"></path>
+        </svg>
+        <span>Inicio</span>
+    </a>
 
-            <a href="mascotas.html"class="menu-item">
-                🐾 <span>Mis mascotas</span>
-            </a>
+    <!-- MIS MASCOTAS -->
+    <a href="mascotas.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <ellipse cx="5.5" cy="7" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="11" cy="4.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="17" cy="5.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="20" cy="10" rx="2" ry="2.5"></ellipse>
+            <path d="M12 10c-3.5 0-7 4-7 7a3 3 0 0 0 4 2.8l3-1 3 1A3 3 0 0 0 19 17c0-3-3.5-7-7-7Z"></path>
+        </svg>
+        <span>Mis mascotas</span>
+    </a>
 
-             <a href="buscar.html"class="menu-item">
-                🔎 <span>Buscar mascotas</span>
-            </a>
+    <!-- BUSCAR MASCOTAS -->
+    <a href="buscar.html" class="menu-item activo" aria-current="page">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+            <path d="m16 16 5 5"></path>
+        </svg>
+        <span>Buscar mascotas</span>
+    </a>
 
-            <a href="extravio.html" class="menu-item">
-                🚨 <span>Reportar extravío</span>
-            </a>
+    <!-- REPORTAR EXTRAVÍO -->
+    <a href="extravio.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 22 20H2L12 3Z"></path>
+            <path d="M12 9v5"></path>
+            <path d="M12 17.5h.01"></path>
+        </svg>
+        <span>Reportar extravío</span>
+    </a>
 
-            <a href="extravios.html" class="menu-item">
-                <span>Reportes de extravío</span>
-            </a>
+    <!-- REPORTES DE EXTRAVÍO -->
+    <a href="extravios.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+            <path d="M9 8h6"></path>
+            <path d="M9 12h6"></path>
+            <path d="M9 16h4"></path>
+        </svg>
+        <span>Reportes de extravío</span>
+    </a>
 
-            <a href="avistamiento.html"class="menu-item">
-                👀 <span>Avistamientos</span>
-            </a>
+    <!-- AVISTAMIENTOS -->
+    <a href="avistamiento.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+        </svg>
+        <span>Avistamientos</span>
+    </a>
 
-            <a href="avistamientos.html" class="menu-item">
-                👀 <span>Avistamientos registrados</span>
-            </a>
+    <!-- AVISTAMIENTOS REGISTRADOS -->
+    <a href="avistamientos.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span>Avistamientos registrados</span>
+    </a>
 
-            <a href="mapa.html" class="menu-item">
-                📍 <span>Mapa</span>
-            </a>
+    <!-- MAPA -->
+    <a href="mapa.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
+            <path d="M9 3v15"></path>
+            <path d="M15 6v15"></path>
+        </svg>
+        <span>Mapa</span>
+    </a>
 
-            <a href="perfil.html"class="menu-item">
-                👤 <span>Mi perfil</span>
-            </a>
+    <!-- MI PERFIL -->
+    <a href="perfil.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21a8 8 0 0 1 16 0"></path>
+        </svg>
+        <span>Mi perfil</span>
+    </a>
 
-            <a href="login.html">
-                🚪 <span>Cerrar sesión</span>
-            </a>
+</nav>
 
-        </nav>
+<div class="sidebar-footer">
+<a href="login.html"
+   class="menu-item cerrar-sesion"
+   id="cerrarSesion">
+            <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 17l5-5-5-5"></path>
+            <path d="M15 12H3"></path>
+            <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"></path>
+        </svg>
+        <span>Cerrar sesión</span>
+    </a>
+</div>
 
     </aside>
 
@@ -220,158 +282,18 @@
 
         <section class="results-section">
 
-            <div class="results-header">
+    <div class="results-header">
+        <h2>Mascotas extraviadas</h2>
+        <span class="results-count" id="cantidadResultados">
+            Cargando reportes...
+        </span>
+    </div>
 
-                <h2>Mascotas extraviadas</h2>
+    <div id="resultadosBusqueda" aria-live="polite">
+        <p>Consultando reportes de PETTO...</p>
+    </div>
 
-                <span class="results-count">
-                    2 reportes encontrados
-                </span>
-
-            </div>
-
-
-            <!-- =========================
-                 REPORTE 1
-            ========================== -->
-
-            <article class="lost-pet-card">
-
-                <div class="lost-pet-image">
-
-                    <div class="pet-placeholder">
-                        🐕
-                    </div>
-
-                </div>
-
-
-                <div class="lost-pet-info">
-
-                    <div class="lost-pet-title">
-
-                        <h3>Luna</h3>
-
-                        <span class="lost-status">
-                            EXTRAVIADA
-                        </span>
-
-                    </div>
-
-
-                    <p>
-                        <strong>Especie:</strong> Perro
-                    </p>
-
-                    <p>
-                        <strong>Raza:</strong> Labrador
-                    </p>
-
-                    <p>
-                        <strong>Color:</strong> Marrón claro
-                    </p>
-
-                    <p>
-                        <strong>Última ubicación:</strong>
-                        Barrio Centro
-                    </p>
-
-                    <p>
-                        <strong>Fecha:</strong>
-                        05/09/2026
-                    </p>
-
-
-                    <p class="pet-description">
-
-                        Tiene un collar rosa y una pequeña mancha
-                        blanca en el pecho.
-
-                    </p>
-
-
-                    <a
-                        href="avistamiento.html"
-                        class="btn-petto-primary"
-                    >
-                        👀 Informar avistamiento
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- =========================
-                 REPORTE 2
-            ========================== -->
-
-            <article class="lost-pet-card">
-
-                <div class="lost-pet-image">
-
-                    <div class="pet-placeholder">
-                        🐈
-                    </div>
-
-                </div>
-
-
-                <div class="lost-pet-info">
-
-                    <div class="lost-pet-title">
-
-                        <h3>Milo</h3>
-
-                        <span class="lost-status">
-                            EXTRAVIADO
-                        </span>
-
-                    </div>
-
-
-                    <p>
-                        <strong>Especie:</strong> Gato
-                    </p>
-
-                    <p>
-                        <strong>Raza:</strong> Mestizo
-                    </p>
-
-                    <p>
-                        <strong>Color:</strong> Gris
-                    </p>
-
-                    <p>
-                        <strong>Última ubicación:</strong>
-                        Plaza San Martín
-                    </p>
-
-                    <p>
-                        <strong>Fecha:</strong>
-                        04/09/2026
-                    </p>
-
-
-                    <p class="pet-description">
-
-                        Tiene los ojos verdes y lleva un collar azul.
-
-                    </p>
-
-
-                    <a
-                        href="avistamiento.html"
-                        class="btn-petto-primary"
-                    >
-                        👀 Informar avistamiento
-                    </a>
-
-                </div>
-
-            </article>
-
-        </section>
+</section>
 
     </main>
 
@@ -380,22 +302,256 @@
          JAVASCRIPT
     ========================== -->
 
-    <script>
+    
+<script>
 
-        const formulario = document.querySelector("form");
+    const API_REPORTES = "http://localhost:5174/api/ReportesExtravio";
+    const API_MASCOTAS = "http://localhost:5174/api/Mascotas";
 
-        formulario.addEventListener("submit", function(event) {
+    const formulario = document.querySelector(".search-box form");
+    const resultados = document.getElementById("resultadosBusqueda");
+    const contador = document.getElementById("cantidadResultados");
 
-            event.preventDefault();
+    let reportesDisponibles = [];
 
-            alert(
-                "La búsqueda está preparada. " +
-                "Más adelante conectaremos estos filtros con MySQL."
-            );
+    function obtenerToken() {
+        const guardado =
+            localStorage.getItem("pettoUsuario") ||
+            sessionStorage.getItem("pettoUsuario");
 
+        if (!guardado) return null;
+
+        try {
+            const usuario = JSON.parse(guardado);
+            return usuario.token || null;
+        } catch {
+            return null;
+        }
+    }
+
+    function escaparHTML(valor) {
+        return String(valor ?? "").replace(/[&<>"']/g, caracter => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[caracter]);
+    }
+
+    function mostrarResultados() {
+        const palabra = document.getElementById("buscar").value
+            .trim().toLowerCase();
+
+        const especie = document.getElementById("especie").value
+            .toLowerCase();
+
+        const localidad = document.getElementById("localidad").value
+            .trim().toLowerCase();
+
+        const filtrados = reportesDisponibles.filter(item => {
+            const mascota = item.mascota;
+            const reporte = item.reporte;
+
+            const texto = [
+                mascota.nombre,
+                mascota.especie,
+                mascota.raza,
+                mascota.color,
+                mascota.caracteristicas,
+                reporte.descripcion,
+                reporte.ubicacion
+            ].join(" ").toLowerCase();
+
+            const coincidePalabra = !palabra || texto.includes(palabra);
+
+            const coincideEspecie = !especie ||
+                (especie === "otro"
+                    ? !["perro", "gato"].includes(
+                        String(mascota.especie || "").toLowerCase()
+                    )
+                    : String(mascota.especie || "").toLowerCase() === especie);
+
+            const coincideLocalidad = !localidad ||
+                String(reporte.ubicacion || "")
+                    .toLowerCase().includes(localidad);
+
+            return coincidePalabra &&
+                   coincideEspecie &&
+                   coincideLocalidad;
         });
 
-    </script>
+        contador.textContent =
+            filtrados.length + " reportes encontrados";
+
+        if (filtrados.length === 0) {
+            resultados.innerHTML =
+                '<p>No encontramos mascotas que coincidan con la búsqueda.</p>';
+            return;
+        }
+
+        resultados.innerHTML = filtrados.map(({ reporte, mascota }) => {
+            const especieMascota = String(mascota.especie || "").toLowerCase();
+            const emoji = especieMascota === "gato" ? "🐈" : "🐕";
+            
+const rutaFoto = mascota.rutaFoto || "";
+
+let fotoMascota = `<div class="pet-placeholder">${emoji}</div>`;
+
+if (rutaFoto) {
+    const urlFoto = new URL(
+        rutaFoto,
+        "http://localhost:5174"
+    ).href;
+
+    fotoMascota = `
+        <img
+            src="${escaparHTML(urlFoto)}"
+            alt="Fotografía de ${escaparHTML(mascota.nombre || "la mascota")}"
+            style="width:100%; height:100%; object-fit:cover; border-radius:12px;"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
+        <div class="pet-placeholder" style="display:none;">
+            ${emoji}
+        </div>
+    `;
+}
+
+
+            const fecha = reporte.fecha
+                ? String(reporte.fecha).slice(0, 10)
+                : "No indicada";
+
+            return `
+                <article class="lost-pet-card">
+                   <div class="lost-pet-image">
+                        ${fotoMascota}
+                    </div>
+
+                    <div class="lost-pet-info">
+                        <div class="lost-pet-title">
+                            <h3>${escaparHTML(mascota.nombre || "Sin nombre")}</h3>
+                            <span class="lost-status">EXTRAVIADA</span>
+                        </div>
+
+                        <p><strong>Especie:</strong>
+                            ${escaparHTML(mascota.especie || "Sin registrar")}
+                        </p>
+
+                        <p><strong>Raza:</strong>
+                            ${escaparHTML(mascota.raza || "Sin registrar")}
+                        </p>
+
+                        <p><strong>Color:</strong>
+                            ${escaparHTML(mascota.color || "Sin registrar")}
+                        </p>
+
+                        <p><strong>Última ubicación:</strong>
+                            ${escaparHTML(reporte.ubicacion || "No indicada")}
+                        </p>
+
+                        <p><strong>Fecha:</strong>
+                            ${escaparHTML(fecha)}
+                        </p>
+
+                        <p class="pet-description">
+                            ${escaparHTML(
+                                reporte.descripcion ||
+                                mascota.caracteristicas ||
+                                "Sin descripción"
+                            )}
+                        </p>
+
+                        <a href="avistamiento.html?idMascota=${encodeURIComponent(mascota.idMascota)}"
+                        class="btn-petto-primary">
+                             Informar avistamiento
+                        </a>
+                    </div>
+                </article>
+            `;
+        }).join("");
+    }
+
+    async function cargarReportes() {
+        const token = obtenerToken();
+
+        if (!token) {
+            window.location.replace("login.html");
+            return;
+        }
+
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`
+            };
+
+            const [respuestaReportes, respuestaMascotas] =
+                await Promise.all([
+                    fetch(API_REPORTES, { headers }),
+                    fetch(API_MASCOTAS, { headers })
+                ]);
+
+            if (!respuestaReportes.ok || !respuestaMascotas.ok) {
+                throw new Error(
+                    "No se pudieron obtener los reportes desde PETTO."
+                );
+            }
+
+            const reportes = await respuestaReportes.json();
+            const mascotas = await respuestaMascotas.json();
+
+            if (!Array.isArray(reportes) || !Array.isArray(mascotas)) {
+                throw new Error("La API devolvió datos inesperados.");
+            }
+
+            const mascotasPorId = new Map(
+                mascotas.map(mascota => [
+                    Number(mascota.idMascota),
+                    mascota
+                ])
+            );
+
+            reportesDisponibles = reportes
+                .filter(reporte =>
+                    String(reporte.estado || "").toUpperCase() === "ACTIVO"
+                )
+                .map(reporte => ({
+                    reporte,
+                    mascota: mascotasPorId.get(Number(reporte.idMascota))
+                }))
+                .filter(item => item.mascota);
+
+            mostrarResultados();
+
+        } catch (error) {
+            console.error("Error al buscar mascotas:", error);
+            contador.textContent = "No se pudieron cargar los reportes";
+            resultados.textContent = error.message;
+        }
+    }
+
+    formulario.addEventListener("submit", function (event) {
+        event.preventDefault();
+        mostrarResultados();
+    });
+
+    formulario.addEventListener("reset", function () {
+        setTimeout(mostrarResultados, 0);
+    });
+
+    document.addEventListener("DOMContentLoaded", cargarReportes);
+
+    document.getElementById("cerrarSesion")
+    ?.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        localStorage.removeItem("pettoUsuario");
+        sessionStorage.removeItem("pettoUsuario");
+
+        window.location.replace("login.html");
+    });
+</script>
+
 
 </body>
 </html>

@@ -3825,18 +3825,21 @@ body {
 }
 
 /* =====================================
-   ICONOS DEL MENU PETTO
+   ICONOS SVG DEL MENÚ PETTO
 ===================================== */
 
 .menu-icono {
     width: 22px;
     height: 22px;
     flex-shrink: 0;
+
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
+
+    display: block;
     transition: transform 0.2s ease;
 }
 
@@ -3846,8 +3849,18 @@ body {
     gap: 12px;
 }
 
+.menu-item .menu-icono {
+    color: inherit;
+}
+
 .menu-item:hover .menu-icono {
     transform: scale(1.08);
+}
+
+/* Huellita original con relleno */
+.menu-item[href="mascotas.html"] .menu-icono {
+    fill: currentColor;
+    stroke: none;
 }
 
 /* LOGO DE LA BARRA LATERAL PETTO */

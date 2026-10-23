@@ -15,6 +15,13 @@
 
     <!-- Estilos PETTO -->
     <link rel="stylesheet" href="css/estilos.css">
+
+    <!-- Estilos del mapa Leaflet -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
 </head>
 
 <body>
@@ -42,74 +49,98 @@
             </div>
         
             <nav class="menu">
-                <a href="dashboard.html" class="menu-item">
-                    <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M3 10.5 12 3l9 7.5"/>
-                        <path d="M5.5 9.5V21h13V9.5"/>
-                        <path d="M9.5 21v-7h5v7"/>
-                    </svg>
-                    <span>Inicio</span>
-                </a>
-            
-                <a href="mascotas.html" class="menu-item">
-                    <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
-                        <ellipse cx="5.5" cy="7" rx="2" ry="2.5"/>
-                        <ellipse cx="11" cy="4.5" rx="2" ry="2.5"/>
-                        <ellipse cx="17" cy="5.5" rx="2" ry="2.5"/>
-                        <ellipse cx="20" cy="10" rx="2" ry="2.5"/>
-                        <path d="M12 10c-3.5 0-7 4-7 7a3 3 0 0 0 4 2.8l3-1 3 1A3 3 0 0 0 19 17c0-3-3.5-7-7-7Z"/>
-                    </svg>
-                    <span>Mis mascotas</span>
-                </a>
 
-                 <a href="buscar.html"class="menu-item">
-                     🔎 <span>Buscar mascotas</span>
-                 </a>
-            
-                <a href="extravio.html" class="menu-item activo">
-                    <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 3 22 20H2L12 3Z"/>
-                        <path d="M12 9v5"/>
-                        <path d="M12 17.5h.01"/>
-                    </svg>
-                    <span>Reportar extravío</span>
-                </a>
+    <!-- INICIO -->
+    <a href="dashboard.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5.5 9.5V21h13V9.5"></path>
+            <path d="M9.5 21v-7h5v7"></path>
+        </svg>
+        <span>Inicio</span>
+    </a>
 
-                <a href="extravios.html" class="menu-item">
-                   <span>Reportes de extravío</span>
-                </a>
-            
-                <a href="avistamiento.html" class="menu-item">
-                    <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-                        <circle cx="12" cy="10" r="2.5"/>
-                    </svg>
-                    <span>Avistamientos</span>
-                </a>
+    <!-- MIS MASCOTAS -->
+    <a href="mascotas.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <ellipse cx="5.5" cy="7" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="11" cy="4.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="17" cy="5.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="20" cy="10" rx="2" ry="2.5"></ellipse>
+            <path d="M12 10c-3.5 0-7 4-7 7a3 3 0 0 0 4 2.8l3-1 3 1A3 3 0 0 0 19 17c0-3-3.5-7-7-7Z"></path>
+        </svg>
+        <span>Mis mascotas</span>
+    </a>
 
-                <a href="avistamientos.html" class="menu-item">
-                    👀 <span>Avistamientos registrados</span>
-                </a>
+    <!-- BUSCAR MASCOTAS -->
+    <a href="buscar.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+            <path d="m16 16 5 5"></path>
+        </svg>
+        <span>Buscar mascotas</span>
+    </a>
 
-            
-                <a href="mapa.html" class="menu-item">
-                    <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/>
-                        <path d="M9 3v15"/>
-                        <path d="M15 6v15"/>
-                    </svg>
-                    <span>Mapa</span>
-                </a>
-            
-                <a href="perfil.html" class="menu-item">
-                    <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="8" r="4"/>
-                        <path d="M4 21a8 8 0 0 1 16 0"/>
-                    </svg>
-                    <span>Mi perfil</span>
-                </a>
-            </nav>
-        
+    <!-- REPORTAR EXTRAVÍO -->
+    <a href="extravio.html" class="menu-item activo" aria-current="page">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 22 20H2L12 3Z"></path>
+            <path d="M12 9v5"></path>
+            <path d="M12 17.5h.01"></path>
+        </svg>
+        <span>Reportar extravío</span>
+    </a>
+
+    <!-- REPORTES DE EXTRAVÍO -->
+    <a href="extravios.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+            <path d="M9 8h6"></path>
+            <path d="M9 12h6"></path>
+            <path d="M9 16h4"></path>
+        </svg>
+        <span>Reportes de extravío</span>
+    </a>
+
+    <!-- AVISTAMIENTOS -->
+    <a href="avistamiento.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+        </svg>
+        <span>Avistamientos</span>
+    </a>
+
+    <!-- AVISTAMIENTOS REGISTRADOS -->
+    <a href="avistamientos.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span>Avistamientos registrados</span>
+    </a>
+
+    <!-- MAPA -->
+    <a href="mapa.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
+            <path d="M9 3v15"></path>
+            <path d="M15 6v15"></path>
+        </svg>
+        <span>Mapa</span>
+    </a>
+
+    <!-- MI PERFIL -->
+    <a href="perfil.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21a8 8 0 0 1 16 0"></path>
+        </svg>
+        <span>Mi perfil</span>
+    </a>
+
+</nav>
+
             <div class="sidebar-footer">
                 <a href="login.html" class="menu-item cerrar-sesion">
                     <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
@@ -413,6 +444,28 @@
 
                     </div>
 
+                    <!-- MAPA PARA SELECCIONAR LA UBICACIÓN -->
+                    <div class="mt-4 mb-4">
+
+                        <label class="form-label">
+                            📍 Seleccioná dónde se perdió tu mascota
+                        </label>
+
+                        <p class="text-muted">
+                            Hacé clic sobre el mapa para marcar la última
+                            ubicación conocida de tu mascota.
+                        </p>
+
+                        <div
+                            id="mapaExtravio"
+                            style="height: 350px; width: 100%; border-radius: 12px;"
+                        ></div>
+
+                        <p id="coordenadasExtravio" class="mt-2 text-muted">
+                            Todavía no seleccionaste una ubicación en el mapa.
+                        </p>
+
+                    </div>
 
                     <!-- =================================
                          DESCRIPCIÓN
@@ -482,7 +535,7 @@
                             type="file"
                             id="fotoExtravio"
                             name="fotoExtravio"
-                            accept="image/*"
+                            accept=".jpg,.jpeg,.png,.webp"
                             hidden
                         >
 
@@ -539,6 +592,12 @@
                         </button>
 
                     </div>
+                    <div
+                        id="mensajeResultadoExtravio"
+                        class="alert d-none mt-3"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
 
                 </form>
 
@@ -552,6 +611,8 @@
     <!-- =====================================
          JAVASCRIPT TEMPORAL
     ====================================== -->
+<!-- Biblioteca Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
 
@@ -583,6 +644,46 @@
         
         const API_MASCOTAS = "http://localhost:5174/api/Mascotas";
         const API_REPORTES = "http://localhost:5174/api/ReportesExtravio";
+        const API_FOTOS = "http://localhost:5174/api/FotosMascotas";
+
+                // =====================================
+        // MAPA DE UBICACIÓN DEL EXTRAVÍO
+        // =====================================
+
+        const mapaExtravio = L.map("mapaExtravio").setView(
+            [-31.4, -63.2],
+            12
+        );
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 19
+            }
+        ).addTo(mapaExtravio);
+
+        let marcadorExtravio = null;
+        let latitudExtravio = null;
+        let longitudExtravio = null;
+
+        mapaExtravio.on("click", function (evento) {
+
+            latitudExtravio = evento.latlng.lat;
+            longitudExtravio = evento.latlng.lng;
+
+            if (marcadorExtravio) {
+                marcadorExtravio.setLatLng(evento.latlng);
+            } else {
+                marcadorExtravio = L.marker(evento.latlng)
+                    .addTo(mapaExtravio);
+            }
+
+            document.getElementById("coordenadasExtravio").textContent =
+                "Ubicación seleccionada: " +
+                latitudExtravio.toFixed(6) + ", " +
+                longitudExtravio.toFixed(6);
+        });
 
         const formularioExtravio = document.getElementById("formularioExtravio");
         const selectorMascota = document.getElementById("mascota");
@@ -606,9 +707,62 @@
         }
 
         function mostrarMensaje(texto, tipo) {
+
+            const mensajeResultado = document.getElementById(
+                "mensajeResultadoExtravio"
+            );
+
+            // Mostrar mensaje debajo del botón.
+            mensajeResultado.textContent = texto;
+            mensajeResultado.className = `alert alert-${tipo} mt-3`;
+
+            // Mantener también el mensaje superior.
             mensajeExtravio.textContent = texto;
             mensajeExtravio.className = `alert alert-${tipo}`;
+
         }
+
+        function limpiarMapaExtravio() {
+            latitudExtravio = null;
+            longitudExtravio = null;
+
+            if (marcadorExtravio) {
+                mapaExtravio.removeLayer(marcadorExtravio);
+                marcadorExtravio = null;
+            }
+
+            document.getElementById("coordenadasExtravio").textContent =
+                "Todavía no seleccionaste una ubicación en el mapa.";
+        }
+
+        async function subirFotoExtravio(idMascota, archivo, token) {
+
+        const formularioFoto = new FormData();
+
+        formularioFoto.append("foto", archivo);
+
+        const respuesta = await fetch(
+            `${API_FOTOS}/${idMascota}`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                body: formularioFoto
+            }
+        );
+
+        const resultado = await respuesta.json().catch(() => ({}));
+
+        if (!respuesta.ok) {
+            throw new Error(
+                resultado.mensaje ||
+                "No se pudo guardar la fotografía."
+            );
+        }
+
+        return resultado;
+    }
 
         async function cargarMascotas() {
             const token = obtenerToken();
@@ -698,12 +852,22 @@
                 );
                 return;
             }
+
+            if (latitudExtravio === null || longitudExtravio === null) {
+                mostrarMensaje(
+                    "Seleccioná en el mapa dónde se perdió tu mascota.",
+                    "warning"
+                );
+                return;
+            }
         
             const datos = {
                 idMascota: idMascota,
                 fecha: fecha,
                 hora: hora,
                 ubicacion: ubicacion,
+                latitud: latitudExtravio,
+                longitud: longitudExtravio,
                 descripcion: descripcion || null
             };
         
@@ -734,12 +898,43 @@
                     throw new Error(detalle);
                 }
             
-                mostrarMensaje(
-                    "¡Reporte de extravío registrado correctamente!",
-                    "success"
-                );
-            
+                // El reporte ya fue guardado correctamente en SQL Server.
+                const archivoSeleccionado = fotoExtravio.files[0];
+
+                let mensajeFinal = "¡Reporte de extravío registrado correctamente!";
+                let tipoMensaje = "success";
+
+                if (archivoSeleccionado) {
+
+                    try {
+
+                        await subirFotoExtravio(
+                            idMascota,
+                            archivoSeleccionado,
+                            token
+                        );
+
+                        mensajeFinal =
+                            "¡Reporte de extravío y fotografía guardados correctamente!";
+
+                    } catch (errorFoto) {
+
+                        console.error("Error al subir fotografía:", errorFoto);
+
+                        mensajeFinal =
+                            "El reporte se registró correctamente, " +
+                            "pero no se pudo guardar la fotografía: " +
+                            errorFoto.message;
+
+                        tipoMensaje = "warning";
+                    }
+                }
+
+                mostrarMensaje(mensajeFinal, tipoMensaje);
+
                 formularioExtravio.reset();
+                limpiarMapaExtravio();
+
                 document.getElementById("nombreFotoExtravio").textContent = "";
             } catch (error) {
                 mostrarMensaje(error.message, "danger");

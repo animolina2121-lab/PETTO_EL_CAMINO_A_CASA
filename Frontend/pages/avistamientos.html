@@ -199,17 +199,109 @@
         </div>
 
         <nav class="menu">
-            <a href="dashboard.html" class="menu-item">🏠 <span>Inicio</span></a>
-            <a href="mascotas.html" class="menu-item">🐾 <span>Mis mascotas</span></a>
-            <a href="extravio.html" class="menu-item">🚨 <span>Reportar extravío</span></a>
-            <a href="buscar.html" class="menu-item">🔎 <span>Buscar mascotas</span></a>
-            <a href="extravios.html" class="menu-item">🚨 <span>Reportes de extravío</span></a>
-            <a href="avistamiento.html" class="menu-item">➕ <span>Registrar avistamiento</span></a>
-            <a href="avistamientos.html" class="menu-item activo">👀 <span>Avistamientos registrados</span></a>
-            <a href="mapa.html" class="menu-item">📍 <span>Mapa</span></a>
-            <a href="perfil.html" class="menu-item">👤 <span>Mi perfil</span></a>
-            <a href="login.html" class="menu-item">🚪 <span>Cerrar sesión</span></a>
-        </nav>
+
+    <!-- INICIO -->
+    <a href="dashboard.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5.5 9.5V21h13V9.5"></path>
+            <path d="M9.5 21v-7h5v7"></path>
+        </svg>
+        <span>Inicio</span>
+    </a>
+
+    <!-- MIS MASCOTAS -->
+    <a href="mascotas.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <ellipse cx="5.5" cy="7" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="11" cy="4.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="17" cy="5.5" rx="2" ry="2.5"></ellipse>
+            <ellipse cx="20" cy="10" rx="2" ry="2.5"></ellipse>
+            <path d="M12 10c-3.5 0-7 4-7 7a3 3 0 0 0 4 2.8l3-1 3 1A3 3 0 0 0 19 17c0-3-3.5-7-7-7Z"></path>
+        </svg>
+        <span>Mis mascotas</span>
+    </a>
+
+    <!-- BUSCAR MASCOTAS -->
+    <a href="buscar.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+            <path d="m16 16 5 5"></path>
+        </svg>
+        <span>Buscar mascotas</span>
+    </a>
+
+    <!-- REPORTAR EXTRAVÍO -->
+    <a href="extravio.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 22 20H2L12 3Z"></path>
+            <path d="M12 9v5"></path>
+            <path d="M12 17.5h.01"></path>
+        </svg>
+        <span>Reportar extravío</span>
+    </a>
+
+    <!-- REPORTES DE EXTRAVÍO -->
+    <a href="extravios.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+            <path d="M9 8h6"></path>
+            <path d="M9 12h6"></path>
+            <path d="M9 16h4"></path>
+        </svg>
+        <span>Reportes de extravío</span>
+    </a>
+
+    <!-- AVISTAMIENTOS -->
+    <a href="avistamiento.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+        </svg>
+        <span>Avistamientos</span>
+    </a>
+
+    <!-- AVISTAMIENTOS REGISTRADOS -->
+    <a href="avistamientos.html" class="menu-item activo" aria-current="page">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span>Avistamientos registrados</span>
+    </a>
+
+    <!-- MAPA -->
+    <a href="mapa.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
+            <path d="M9 3v15"></path>
+            <path d="M15 6v15"></path>
+        </svg>
+        <span>Mapa</span>
+    </a>
+
+    <!-- MI PERFIL -->
+    <a href="perfil.html" class="menu-item">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21a8 8 0 0 1 16 0"></path>
+        </svg>
+        <span>Mi perfil</span>
+    </a>
+
+</nav>
+
+<div class="sidebar-footer">
+    <a href="login.html" class="menu-item cerrar-sesion">
+        <svg class="menu-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 17l5-5-5-5"></path>
+            <path d="M15 12H3"></path>
+            <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"></path>
+        </svg>
+        <span>Cerrar sesión</span>
+    </a>
+</div>
+
     </aside>
 
     <main class="main-content">
@@ -247,7 +339,75 @@
 
             <div id="listaAvistamientos" class="lista-avistamientos"></div>
         </section>
-    </main>
+
+        <!-- FORMULARIO PARA EDITAR AVISTAMIENTOS -->
+        <dialog id="dialogEditar" class="border-0 rounded-4 shadow p-4"
+                style="width: min(95%, 520px);">
+
+            <h2 class="h4 mb-3">✏️ Editar avistamiento</h2>
+
+            <form id="formEditarAvistamiento">
+
+                <input type="hidden" id="editarId">
+
+                <div class="mb-3">
+                    <label for="editarFecha" class="form-label">Fecha</label>
+                    <input type="date" id="editarFecha"
+                        class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="editarHora" class="form-label">Hora</label>
+                    <input type="time" id="editarHora"
+                        class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="editarUbicacion" class="form-label">Ubicación</label>
+                    <input type="text" id="editarUbicacion"
+                        class="form-control" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="editarLatitud" class="form-label">Latitud</label>
+                        <input type="number" id="editarLatitud"
+                            class="form-control" step="any"
+                            min="-90" max="90">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="editarLongitud" class="form-label">Longitud</label>
+                        <input type="number" id="editarLongitud"
+                            class="form-control" step="any"
+                            min="-180" max="180">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="editarDescripcion" class="form-label">
+                        Descripción
+                    </label>
+                    <textarea id="editarDescripcion"
+                            class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" id="btnCancelarEdicion"
+                            class="btn btn-secondary">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" id="btnGuardarEdicion"
+                            class="btn btn-primary">
+                        Guardar cambios
+                    </button>
+                </div>
+
+            </form>
+        </dialog>
+
+        </main>
 
     <script>
         const API_BASE = "http://localhost:5174/api";
@@ -354,6 +514,33 @@
 
             descripcion.append(subtitulo, textoDescripcion);
             tarjeta.appendChild(descripcion);
+
+            // CONTENEDOR DE ACCIONES
+            const acciones = document.createElement("div");
+            acciones.className = "d-flex gap-2 mt-3";
+
+            // BOTÓN EDITAR
+            const btnEditar = document.createElement("button");
+            btnEditar.type = "button";
+            btnEditar.className = "btn btn-outline-primary flex-fill";
+            btnEditar.textContent = "✏️ Editar";
+
+            btnEditar.addEventListener("click", () => {
+                abrirEdicion(avistamiento);
+            });
+
+            // BOTÓN ELIMINAR
+            const btnEliminar = document.createElement("button");
+            btnEliminar.type = "button";
+            btnEliminar.className = "btn btn-outline-danger flex-fill";
+            btnEliminar.textContent = "🗑️ Eliminar";
+
+            btnEliminar.addEventListener("click", () => {
+                eliminarAvistamiento(avistamiento.idAvistamiento);
+            });
+
+            acciones.append(btnEditar, btnEliminar);
+            tarjeta.appendChild(acciones);
 
             return tarjeta;
         }
@@ -526,6 +713,191 @@
             }
         }
 
+                // ========================================
+        // EDITAR AVISTAMIENTO
+        // ========================================
+
+        const dialogEditar = document.getElementById("dialogEditar");
+        const formEditar = document.getElementById("formEditarAvistamiento");
+        const btnGuardarEdicion = document.getElementById("btnGuardarEdicion");
+
+        document.getElementById("btnCancelarEdicion")
+            .addEventListener("click", () => {
+                dialogEditar.close();
+            });
+
+        function abrirEdicion(avistamiento) {
+
+            document.getElementById("editarId").value =
+                avistamiento.idAvistamiento;
+
+            document.getElementById("editarFecha").value =
+                avistamiento.fecha
+                    ? String(avistamiento.fecha).slice(0, 10)
+                    : "";
+
+            document.getElementById("editarHora").value =
+                avistamiento.hora
+                    ? String(avistamiento.hora).slice(0, 5)
+                    : "";
+
+            document.getElementById("editarUbicacion").value =
+                avistamiento.ubicacion || "";
+
+            document.getElementById("editarLatitud").value =
+                avistamiento.latitud ?? "";
+
+            document.getElementById("editarLongitud").value =
+                avistamiento.longitud ?? "";
+
+            document.getElementById("editarDescripcion").value =
+                avistamiento.descripcion || "";
+
+            dialogEditar.showModal();
+        }
+
+
+        // ========================================
+        // GUARDAR CAMBIOS
+        // ========================================
+
+        formEditar.addEventListener("submit", async function (evento) {
+
+            evento.preventDefault();
+
+            const usuario = obtenerUsuario();
+
+            if (!usuario) {
+                mostrarMensaje("Debés iniciar sesión nuevamente.", "warning");
+                return;
+            }
+
+            const id = document.getElementById("editarId").value;
+
+            const fecha = document.getElementById("editarFecha").value;
+            const hora = document.getElementById("editarHora").value;
+            const ubicacion = document.getElementById("editarUbicacion").value.trim();
+
+            const latitudTexto = document.getElementById("editarLatitud").value;
+            const longitudTexto = document.getElementById("editarLongitud").value;
+
+            const datos = {
+                fecha: fecha,
+                hora: hora.length === 5 ? hora + ":00" : hora,
+                ubicacion: ubicacion,
+                latitud: latitudTexto === "" ? null : Number(latitudTexto),
+                longitud: longitudTexto === "" ? null : Number(longitudTexto),
+                descripcion: document.getElementById("editarDescripcion").value.trim()
+            };
+
+            btnGuardarEdicion.disabled = true;
+
+            try {
+
+                const respuesta = await fetch(
+                    API_BASE + "/Avistamientos/" + id,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": "Bearer " + usuario.token,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(datos)
+                    }
+                );
+
+                const resultado = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        resultado.mensaje || "No se pudo editar el avistamiento."
+                    );
+                }
+
+                dialogEditar.close();
+
+                await cargarAvistamientos();
+
+                mostrarMensaje(
+                    "Avistamiento actualizado correctamente.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                console.error("Error al editar:", error);
+
+                mostrarMensaje(error.message, "danger");
+
+            } finally {
+
+                btnGuardarEdicion.disabled = false;
+
+            }
+
+        });
+
+
+        // ========================================
+        // ELIMINAR AVISTAMIENTO
+        // ========================================
+
+        async function eliminarAvistamiento(id) {
+
+            const confirmado = confirm(
+                "¿Estás seguro de que querés eliminar este avistamiento?\n\n" +
+                "También se eliminarán sus fotografías. Esta acción no se puede deshacer."
+            );
+
+            if (!confirmado) {
+                return;
+            }
+
+            const usuario = obtenerUsuario();
+
+            if (!usuario) {
+                mostrarMensaje("Debés iniciar sesión nuevamente.", "warning");
+                return;
+            }
+
+            try {
+
+                const respuesta = await fetch(
+                    API_BASE + "/Avistamientos/" + id,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": "Bearer " + usuario.token
+                        }
+                    }
+                );
+
+                if (!respuesta.ok) {
+
+                    const resultado = await respuesta.json();
+
+                    throw new Error(
+                        resultado.mensaje || "No se pudo eliminar el avistamiento."
+                    );
+
+                }
+
+                await cargarAvistamientos();
+
+                mostrarMensaje(
+                    "Avistamiento eliminado correctamente.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                console.error("Error al eliminar:", error);
+
+                mostrarMensaje(error.message, "danger");
+
+            }
+
+        }
 
         btnActualizar.addEventListener("click", cargarAvistamientos);
 
