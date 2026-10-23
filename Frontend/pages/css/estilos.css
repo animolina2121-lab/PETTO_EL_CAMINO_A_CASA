@@ -3790,6 +3790,22 @@ body {
 .petto-logo-icon {
     flex-shrink: 0;
     display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.navbar-brand .petto-logo-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--rosa-petto);
+}
+
+.footer .petto-logo-icon {
+    width: 28px;
+    height: 28px;
 }
 
 .logo-petto {
@@ -3840,6 +3856,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    color: var(--blanco);
 }
 
 .sidebar-marca .petto-logo-icon {
@@ -3849,6 +3866,7 @@ body {
 }
 
 .sidebar-logo .logo-petto {
+    color: var(--blanco) !important;
     font-size: 1.65rem;
     font-weight: 800;
     letter-spacing: 1px;

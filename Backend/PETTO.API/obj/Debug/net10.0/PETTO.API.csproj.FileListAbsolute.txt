@@ -166,3 +166,4 @@ C:\Users\animo\OneDrive\Escritorio\PETTO\BACKEND\PETTO.API\bin\Debug\net10.0\run
 C:\Users\animo\OneDrive\Escritorio\PETTO\BACKEND\PETTO.API\obj\Debug\net10.0\PETTO.API.sourcelink.json
 C:\Users\animo\OneDrive\Escritorio\PETTO\BACKEND\PETTO.API\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\animo\OneDrive\Escritorio\PETTO\BACKEND\PETTO.API\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
+C:\Users\animo\OneDrive\Escritorio\PETTO\BACKEND\PETTO.API\bin\Debug\net10.0\PETTO.API.staticwebassets.runtime.json

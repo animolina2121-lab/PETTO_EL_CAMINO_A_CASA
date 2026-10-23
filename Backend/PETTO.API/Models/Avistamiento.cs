@@ -1,3 +1,4 @@
+
 namespace PETTO.API.Models
 {
     public class Avistamiento
@@ -19,5 +20,9 @@ namespace PETTO.API.Models
         public decimal? Longitud { get; set; }
 
         public string? Descripcion { get; set; }
+
+        // Fotografías asociadas al avistamiento
+        public ICollection<FotoAvistamiento> Fotos { get; set; }
+            = new List<FotoAvistamiento>();
     }
 }

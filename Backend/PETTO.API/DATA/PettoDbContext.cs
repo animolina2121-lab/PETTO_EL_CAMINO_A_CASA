@@ -49,9 +49,58 @@ namespace PETTO.API.Data
             modelBuilder.Entity<FotoMascota>().Property(x => x.RutaFoto).HasColumnName("ruta_foto");
             modelBuilder.Entity<FotoMascota>().Property(x => x.EsPrincipal).HasColumnName("es_principal");
 
+            
             modelBuilder.Entity<ReporteExtravio>().ToTable("reportes_extravio");
-            modelBuilder.Entity<ReporteExtravio>().Property(x => x.IdReporte).HasColumnName("id_reporte");
-            modelBuilder.Entity<ReporteExtravio>().Property(x => x.IdMascota).HasColumnName("id_mascota");
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .HasKey(x => x.IdReporte);
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.IdReporte)
+                .HasColumnName("id_reporte")
+                .ValueGeneratedOnAdd();
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.IdMascota)
+                .HasColumnName("id_mascota");
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.Fecha)
+                .HasColumnName("fecha")
+                .HasColumnType("date");
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.Hora)
+                .HasColumnName("hora")
+                .HasColumnType("time");
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.Ubicacion)
+                .HasColumnName("ubicacion")
+                .HasMaxLength(300)
+                .IsRequired();
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.Latitud)
+                .HasColumnName("latitud")
+                .HasPrecision(9, 6);
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.Longitud)
+                .HasColumnName("longitud")
+                .HasPrecision(9, 6);
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.Descripcion)
+                .HasColumnName("descripcion")
+                .HasMaxLength(1000);
+            
+            modelBuilder.Entity<ReporteExtravio>()
+                .Property(x => x.Estado)
+                .HasColumnName("estado")
+                .HasMaxLength(20)
+                .IsRequired();
+            
 
             modelBuilder.Entity<Avistamiento>().ToTable("avistamientos");
             modelBuilder.Entity<Avistamiento>().Property(x => x.IdAvistamiento).HasColumnName("id_avistamiento");
@@ -63,7 +112,20 @@ namespace PETTO.API.Data
             modelBuilder.Entity<FotoAvistamiento>().Property(x => x.IdAvistamiento).HasColumnName("id_avistamiento");
             modelBuilder.Entity<FotoAvistamiento>().Property(x => x.RutaFoto).HasColumnName("ruta_foto");
 
+            modelBuilder.Entity<FotoAvistamiento>()
+                .HasKey(x => x.IdFoto);
 
+            modelBuilder.Entity<FotoAvistamiento>()
+                .Property(x => x.IdFoto)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<FotoAvistamiento>()
+                .Property(x => x.RutaFoto)
+                .HasMaxLength(255)
+                .IsRequired();
+                
+            modelBuilder.Entity<Avistamiento>()
+            .HasKey(x => x.IdAvistamiento);
             // ==============================
             // CLAVES PRIMARIAS
             // ==============================
@@ -152,7 +214,7 @@ namespace PETTO.API.Data
             // Avistamiento → Fotos
             modelBuilder.Entity<FotoAvistamiento>()
                 .HasOne<Avistamiento>()
-                .WithMany()
+                .WithMany(a => a.Fotos)
                 .HasForeignKey(f => f.IdAvistamiento)
                 .OnDelete(DeleteBehavior.Cascade);
         }

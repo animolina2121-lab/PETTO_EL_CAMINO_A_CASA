@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETTO - Reportes de extravío</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="sidebar-marca">
+                    <svg class="petto-logo-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <ellipse cx="5.5" cy="7" rx="2" ry="2.5"></ellipse>
+                        <ellipse cx="11" cy="4.5" rx="2" ry="2.5"></ellipse>
+                        <ellipse cx="17" cy="5.5" rx="2" ry="2.5"></ellipse>
+                        <ellipse cx="20" cy="10" rx="2" ry="2.5"></ellipse>
+                        <path d="M12 10c-3.5 0-7 4-7 7a3 3 0 0 0 4 2.8l3-1 3 1A3 3 0 0 0 19 17c0-3-3.5-7-7-7Z"></path>
+                    </svg>
+                    <span class="logo-petto">PETTO</span>
+                </div>
+                <p>EL CAMINO A CASA</p>
+            </div>
+
+            <nav class="menu">
+                <a href="dashboard.html" class="menu-item">Inicio</a>
+                <a href="mascotas.html" class="menu-item">Mis mascotas</a>
+                 <a href="buscar.html"class="menu-item">Buscar mascotas</a>
+                <a href="extravio.html" class="menu-item">Reportar extravío</a>
+                <a href="extravios.html" class="menu-item activo">Reportes de extravío</a>
+                <a href="avistamiento.html" class="menu-item">Avistamientos</a>
+                <a href="avistamientos.html" class="menu-item">Avistamientos registrados</a>
+                <a href="mapa.html" class="menu-item">Mapa</a>
+                <a href="perfil.html" class="menu-item">Mi perfil</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="login.html" class="menu-item cerrar-sesion">Cerrar sesión</a>
+            </div>
+        </aside>
+
+        <main class="contenido-dashboard">
+            <header class="pagina-header">
+                <div>
+                    <h1>🚨 Reportes de extravío</h1>
+                    <p>Consultá los reportes de tus mascotas registrados en PETTO.</p>
+                </div>
+
+                <a href="extravio.html" class="btn-volver">+ Nuevo reporte</a>
+            </header>
+
+            <div id="mensajeReportes" class="alert d-none" role="alert"></div>
+
+            <section class="formulario-mascota">
+                <div class="formulario-mascota-header">
+                    <div>
+                        <h2>Mis reportes</h2>
+                        <p>Los reportes se cargan desde la base de datos.</p>
+                    </div>
+                    <button type="button" id="btnActualizar" class="btn-petto">
+                        Actualizar
+                    </button>
+                </div>
+
+                <div id="listaReportes" class="row g-4 mt-2">
+                    <div class="col-12">
+                        <p>Cargando reportes...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const API_REPORTES = "http://localhost:5174/api/ReportesExtravio";
+        const API_MASCOTAS = "http://localhost:5174/api/Mascotas";
+
+        const listaReportes = document.getElementById("listaReportes");
+        const mensajeReportes = document.getElementById("mensajeReportes");
+        const btnActualizar = document.getElementById("btnActualizar");
+
+        function obtenerToken() {
+            const guardado =
+                localStorage.getItem("pettoUsuario") ||
+                sessionStorage.getItem("pettoUsuario");
+
+            if (!guardado) return null;
+
+            try {
+                const usuario = JSON.parse(guardado);
+                return usuario.token || usuario.accessToken || usuario.jwt || null;
+            } catch {
+                return null;
+            }
+        }
+
+        function mostrarMensaje(texto, tipo) {
+            mensajeReportes.textContent = texto;
+            mensajeReportes.className = `alert alert-${tipo}`;
+        }
+
+        function escaparHTML(valor) {
+            return String(valor ?? "").replace(/[&<>"']/g, caracter => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[caracter]);
+        }
+
+        async function cargarReportes() {
+            const token = obtenerToken();
+
+            listaReportes.innerHTML = "<p>Cargando reportes...</p>";
+            mensajeReportes.className = "alert d-none";
+            btnActualizar.disabled = true;
+
+            if (!token) {
+                listaReportes.innerHTML = "";
+                mostrarMensaje(
+                    "No encontramos tu sesión. Iniciá sesión nuevamente.",
+                    "warning"
+                );
+                btnActualizar.disabled = false;
+                return;
+            }
+
+            try {
+                const [respuestaReportes, respuestaMascotas] = await Promise.all([
+                    fetch(API_REPORTES, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    }),
+                    fetch(API_MASCOTAS, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    })
+                ]);
+
+                if (!respuestaReportes.ok) {
+                    throw new Error(
+                        respuestaReportes.status === 401 ||
+                        respuestaReportes.status === 403
+                            ? "Tu sesión venció o no tenés autorización."
+                            : "No se pudieron consultar los reportes."
+                    );
+                }
+
+                if (!respuestaMascotas.ok) {
+                    throw new Error("No se pudieron consultar tus mascotas.");
+                }
+
+                const reportes = await respuestaReportes.json();
+                const mascotas = await respuestaMascotas.json();
+
+                if (!Array.isArray(reportes) || !Array.isArray(mascotas)) {
+                    throw new Error("La API devolvió un formato de datos inesperado.");
+                }
+
+                if (reportes.length === 0) {
+                    listaReportes.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                Todavía no hay reportes de extravío para mostrar.
+                            </div>
+                            <a href="extravio.html" class="btn-petto">
+                                Registrar un reporte
+                            </a>
+                        </div>`;
+                    return;
+                }
+
+                const mascotasPorId = new Map(
+                    mascotas.map(mascota => [
+                        Number(mascota.idMascota),
+                        mascota
+                    ])
+                );
+
+                listaReportes.innerHTML = reportes.map(reporte => {
+                    const mascota = mascotasPorId.get(Number(reporte.idMascota));
+                    const nombreMascota = mascota
+                        ? mascota.nombre
+                        : `Mascota #${reporte.idMascota}`;
+
+                    const especie = mascota?.especie || "Especie no disponible";
+                    const raza = mascota?.raza || "Raza no especificada";
+                    const estado = String(reporte.estado || "ACTIVO").toUpperCase();
+                    const claseEstado = estado === "ACTIVO"
+                        ? "text-bg-danger"
+                        : "text-bg-secondary";
+
+                    const fecha = reporte.fecha
+                        ? escaparHTML(String(reporte.fecha).slice(0, 10))
+                        : "No indicada";
+
+                    const hora = reporte.hora
+                        ? escaparHTML(String(reporte.hora).slice(0, 5))
+                        : "No indicada";
+
+                    return `
+                        <div class="col-12 col-lg-6">
+                            <article class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+                                        <h3 class="h5 mb-0">
+                                            🐾 ${escaparHTML(nombreMascota)}
+                                        </h3>
+                                        <span class="badge ${claseEstado}">
+                                            ${escaparHTML(estado)}
+                                        </span>
+                                    </div>
+
+                                    <p class="mb-2">
+                                        <strong>Especie:</strong>
+                                        ${escaparHTML(especie)}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Raza:</strong>
+                                        ${escaparHTML(raza)}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Fecha:</strong> ${fecha}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Hora:</strong> ${hora}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Ubicación:</strong>
+                                        ${escaparHTML(reporte.ubicacion || "No indicada")}
+                                    </p>
+                                    <p class="mb-0">
+                                        <strong>Descripción:</strong>
+                                        ${escaparHTML(reporte.descripcion || "Sin descripción adicional")}
+                                    </p>
+                                </div>
+                            </article>
+                        </div>`;
+                }).join("");
+
+            } catch (error) {
+                listaReportes.innerHTML = "";
+                mostrarMensaje(error.message, "danger");
+            } finally {
+                btnActualizar.disabled = false;
+            }
+        }
+
+        btnActualizar.addEventListener("click", cargarReportes);
+        document.addEventListener("DOMContentLoaded", cargarReportes);
+    </script>
+</body>
+</html>

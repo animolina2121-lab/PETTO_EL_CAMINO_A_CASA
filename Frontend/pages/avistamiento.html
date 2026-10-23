@@ -299,13 +299,18 @@
     <aside class="sidebar">
 
         <div class="sidebar-logo">
-
-            <div class="petto-logo">
-                🐾
+            <div class="sidebar-marca">
+                <svg class="petto-logo-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <ellipse cx="5.5" cy="7" rx="2" ry="2.5"></ellipse>
+                    <ellipse cx="11" cy="4.5" rx="2" ry="2.5"></ellipse>
+                    <ellipse cx="17" cy="5.5" rx="2" ry="2.5"></ellipse>
+                    <ellipse cx="20" cy="10" rx="2" ry="2.5"></ellipse>
+                    <path d="M12 10c-3.5 0-7 4-7 7a3 3 0 0 0 4 2.8l3-1 3 1A3 3 0 0 0 19 17c0-3-3.5-7-7-7Z"></path>
+                </svg>
+                <span class="logo-petto">PETTO</span>
             </div>
 
-            <h2>PETTO</h2>
-
+            
             <p>
                 EL CAMINO A CASA
             </p>
@@ -323,16 +328,25 @@
                 🐾 <span>Mis mascotas</span>
             </a>
 
+             <a href="buscar.html"class="menu-item">
+                🔎 <span>Buscar mascotas</span>
+            </a>
+
             <a href="extravio.html"class="menu-item">
                 🚨 <span>Reportar extravío</span>
             </a>
 
-            <a href="buscar.html"class="menu-item">
-                🔎 <span>Buscar mascotas</span>
+
+            <a href="extravios.html" class="menu-item">
+                 <span>Reportes de extravío</span>
             </a>
 
             <a href="avistamiento.html" class="menu-item activo">
                 👀 <span>Avistamientos</span>
+            </a>
+            
+            <a href="avistamientos.html" class="menu-item">
+                👀 <span>Avistamientos registrados</span>
             </a>
 
             <a href="mapa.html"class="menu-item">
@@ -416,6 +430,12 @@
 
             <form id="formAvistamiento">
 
+                <div id="mensajeAvistamiento"
+                    class="alert"
+                    role="alert"
+                    style="display: none;">
+                </div>
+
 
                 <!-- MASCOTA -->
 
@@ -434,24 +454,8 @@
                             ¿Qué mascota viste?
                         </label>
 
-                        <select
-                            id="mascota"
-                            class="form-select"
-                            required
-                        >
-
-                            <option value="">
-                                Seleccionar mascota
-                            </option>
-
-                            <option value="luna">
-                                Luna - Perro Labrador
-                            </option>
-
-                            <option value="milo">
-                                Milo - Gato Mestizo
-                            </option>
-
+                        <select id="mascota" class="form-select" required>
+                            <option value="">Cargando reportes activos...</option>
                         </select>
 
                     </div>
@@ -714,64 +718,333 @@
          JAVASCRIPT
     ========================== -->
 
-    <script>
+ 
 
-        const formulario =
-            document.getElementById("formAvistamiento");
+            <script>
+                const API_BASE = "http://localhost:5174/api";
+
+                const formulario = document.getElementById("formAvistamiento");
+                const selectorReporte = document.getElementById("mascota");
+                const foto = document.getElementById("fotoAvistamiento");
+                const nombreFoto = document.getElementById("nombreFoto");
+                const mensaje = document.getElementById("mensajeAvistamiento");
+
+                function obtenerUsuario() {
+                    const posiblesClaves = ["pettoUsuario", "usuario"];
+
+                    for (const clave of posiblesClaves) {
+                        const contenido = localStorage.getItem(clave)
+                            || sessionStorage.getItem(clave);
+
+                        if (contenido) {
+                            try {
+                                const usuario = JSON.parse(contenido);
+                                const token =
+                                    usuario.token ||
+                                    usuario.accessToken ||
+                                    usuario.jwt;
+
+                                if (token) {
+                                    return { ...usuario, token };
+                                }
+                            } catch (error) {
+                                console.error("No se pudo leer el usuario:", error);
+                            }
+                        }
+                    }
+
+                    return null;
+                }
+
+                function mostrarMensaje(texto, tipo) {
+                mensaje.textContent = texto;
+                mensaje.className = "alert alert-" + tipo;
+                mensaje.style.display = "block";
+                mensaje.style.visibility = "visible";
+                }
+
+                foto.addEventListener("change", function () {
+                    nombreFoto.textContent = foto.files.length > 0
+                        ? "Fotografía seleccionada: " + foto.files[0].name
+                        : "No se seleccionó ninguna fotografía.";
+                });
+
+                async function cargarReportes() {
+                    const usuario = obtenerUsuario();
+
+                    if (!usuario) {
+                        selectorReporte.innerHTML =
+                            '<option value="">Inicia sesión para continuar</option>';
+
+                        mostrarMensaje(
+                            "No encontramos tu sesión. Inicia sesión nuevamente.",
+                            "warning"
+                        );
+                        return;
+                    }
+
+                    try {
+                        const respuesta = await fetch(
+                            API_BASE + "/ReportesExtravio",
+                            {
+                                headers: {
+                                    "Authorization": "Bearer " + usuario.token
+                                }
+                            }
+                        );
+
+                        if (!respuesta.ok) {
+                            throw new Error("No se pudieron cargar los reportes.");
+                        }
+
+                        const reportes = await respuesta.json();
+
+                        const activos = reportes.filter(
+                            reporte => (reporte.estado || "").toUpperCase() === "ACTIVO"
+                        );
+
+                        selectorReporte.innerHTML =
+                            '<option value="">Seleccionar reporte de extravío</option>';
+
+                        for (const reporte of activos) {
+                            const opcion = document.createElement("option");
+                            opcion.value = reporte.idReporte;
+
+                            opcion.textContent =
+                                "Reporte #" + reporte.idReporte +
+                                " - Mascota ID " + reporte.idMascota +
+                                " - " + (reporte.ubicacion || "Ubicación no indicada");
+
+                            selectorReporte.appendChild(opcion);
+                        }
+
+                        if (activos.length === 0) {
+                            selectorReporte.innerHTML =
+                                '<option value="">No hay reportes activos</option>';
+
+                            mostrarMensaje(
+                                "No hay reportes de extravío activos para seleccionar.",
+                                "info"
+                            );
+                        }
+                    } catch (error) {
+                        console.error(error);
+
+                        selectorReporte.innerHTML =
+                            '<option value="">Error al cargar reportes</option>';
+
+                        mostrarMensaje(
+                            "No pudimos cargar los reportes. Verifica que el backend esté ejecutándose.",
+                            "danger"
+                        );
+                    }
+                }
+
+                formulario.addEventListener("submit", async function (event) {
+                    event.preventDefault();
+
+                    const usuario = obtenerUsuario();
+
+                    if (!usuario) {
+                        mostrarMensaje(
+                            "Tu sesión no está activa. Inicia sesión nuevamente.",
+                            "warning"
+                        );
+                        return;
+                    }
+
+                    const idReporte = Number(selectorReporte.value);
+
+                    if (!idReporte) {
+                        mostrarMensaje(
+                            "Selecciona un reporte de extravío válido.",
+                            "warning"
+                        );
+                        return;
+                    }
+
+                    const ubicacion = [
+                        document.getElementById("direccion").value.trim(),
+                        document.getElementById("localidad").value.trim(),
+                        document.getElementById("referencia").value.trim()
+                    ].filter(Boolean).join(", ");
+
+                    const fecha = document.getElementById("fecha").value;
+                    const hora = document.getElementById("hora").value;
+                    const descripcion =
+                        document.getElementById("descripcion").value.trim();
+
+                    if (!fecha || !hora || !ubicacion || !descripcion) {
+                        mostrarMensaje(
+                            "Completa la fecha, la hora, la ubicación y la descripción.",
+                            "warning"
+                        );
+                        return;
+                    }
+
+                    const archivo = foto.files[0];
+
+                    if (archivo) {
+                        const tiposPermitidos = [
+                            "image/jpeg",
+                            "image/png",
+                            "image/webp"
+                        ];
+
+                        if (!tiposPermitidos.includes(archivo.type)) {
+                            mostrarMensaje(
+                                "La fotografía debe ser JPG, PNG o WEBP.",
+                                "warning"
+                            );
+                            return;
+                        }
+
+                        if (archivo.size > 5 * 1024 * 1024) {
+                            mostrarMensaje(
+                                "La fotografía no puede superar los 5 MB.",
+                                "warning"
+                            );
+                            return;
+                        }
+                    }
+
+                    const datos = {
+                        idReporte: idReporte,
+                        fecha: fecha,
+                        hora: hora,
+                        ubicacion: ubicacion,
+                        descripcion: descripcion
+                    };
+
+                    const botonEnviar = formulario.querySelector(
+                        'button[type="submit"], input[type="submit"]'
+                    );
+
+                    if (botonEnviar) {
+                        botonEnviar.disabled = true;
+                    }
+
+                    try {
+                        mostrarMensaje("Registrando avistamiento...", "info");
+
+                        const respuesta = await fetch(
+                            API_BASE + "/Avistamientos",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": "Bearer " + usuario.token
+                                },
+                                body: JSON.stringify(datos)
+                            }
+                        );
+
+                        const resultado = await respuesta.json().catch(() => ({}));
+
+                        if (!respuesta.ok) {
+                            throw new Error(
+                                resultado.mensaje ||
+                                "No se pudo registrar el avistamiento. Código: " +
+                                respuesta.status
+                            );
+                        }
+
+                        
+                        const idAvistamiento =
+                            resultado.idAvistamiento ?? resultado.IdAvistamiento;
+
+                        if (archivo) {
+                            if (!idAvistamiento) {
+                                mostrarMensaje(
+                                    "El avistamiento se registró, pero no recibimos su identificador. No se pudo subir la foto.",
+                                    "warning"
+                                );
+
+                                formulario.reset();
+                                nombreFoto.textContent =
+                                    "No se seleccionó ninguna fotografía.";
+
+                                await cargarReportes();
+                                return;
+                            }
+
+                            mostrarMensaje(
+                                "Avistamiento registrado. Subiendo fotografía...",
+                                "info"
+                            );
+
+                            const datosFoto = new FormData();
+                            datosFoto.append("foto", archivo);
+
+                            const respuestaFoto = await fetch(
+                                API_BASE + "/Avistamientos/" + idAvistamiento + "/foto",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Authorization": "Bearer " + usuario.token
+                                    },
+                                    body: datosFoto
+                                }
+                            );
+
+                            const resultadoFoto = await respuestaFoto
+                                .json()
+                                .catch(() => ({}));
+
+                            console.log("Estado de carga de foto:", respuestaFoto.status);
+                            console.log("Respuesta del servidor:", resultadoFoto);
+
+                            if (!respuestaFoto.ok) {
+                                // El avistamiento ya se guardó; solamente falló la foto.
+                                mostrarMensaje(
+                                    "El avistamiento se guardó correctamente, pero no se pudo guardar la fotografía. " +
+                                    (resultadoFoto.mensaje ||
+                                        resultadoFoto.title ||
+                                        "Código HTTP: " + respuestaFoto.status),
+                                    "warning"
+                                );
+
+                                formulario.reset();
+                                nombreFoto.textContent =
+                                    "No se seleccionó ninguna fotografía.";
+
+                                await cargarReportes();
+                                return;
+                            }
+                        }
+
+                        // Mostrar un único mensaje de éxito cuando corresponda.
+                        mostrarMensaje(
+                            archivo
+                                ? "¡Avistamiento y fotografía registrados correctamente!"
+                                : "¡Avistamiento registrado correctamente!",
+                            "success"
+                        );
+
+                        formulario.reset();
+                        nombreFoto.textContent =
+                            "No se seleccionó ninguna fotografía.";
+
+                        await cargarReportes();
 
 
-        const foto =
-            document.getElementById("fotoAvistamiento");
+                    } catch (error) {
+                        console.error(error);
 
+                        mostrarMensaje(
+                            error.message ||
+                            "Ocurrió un error al registrar el avistamiento.",
+                            "danger"
+                        );
+                    } finally {
+                        if (botonEnviar) {
+                            botonEnviar.disabled = false;
+                        }
+                    }
+                });
 
-        const nombreFoto =
-            document.getElementById("nombreFoto");
-
-
-        /* Mostrar nombre de fotografía */
-
-        foto.addEventListener("change", function () {
-
-            if (foto.files.length > 0) {
-
-                nombreFoto.textContent =
-                    "Fotografía seleccionada: " +
-                    foto.files[0].name;
-
-            } else {
-
-                nombreFoto.textContent =
-                    "No se seleccionó ninguna fotografía.";
-
-            }
-
-        });
-
-
-
-        /* Enviar formulario */
-
-        formulario.addEventListener("submit", function (event) {
-
-            event.preventDefault();
-
-
-            alert(
-                "¡Avistamiento registrado correctamente! " +
-                "Más adelante conectaremos este formulario " +
-                "con MySQL y el mapa."
-            );
-
-
-            formulario.reset();
-
-
-            nombreFoto.textContent =
-                "No se seleccionó ninguna fotografía.";
-
-        });
-
-    </script>
+                cargarReportes();
+            </script>
 
 
 </body>

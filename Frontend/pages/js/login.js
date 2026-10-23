@@ -36,18 +36,33 @@ formulario.addEventListener("submit", async function (evento) {
             );
         }
 
+       
         // Limpiar posibles datos de una sesión anterior.
         localStorage.removeItem("pettoUsuario");
         sessionStorage.removeItem("pettoUsuario");
 
-        // Guardar los datos básicos para navegar por PETTO.
+        // Guardar los datos del usuario junto con el token,
+        // si el backend lo devuelve en la respuesta.
         const almacenamiento = recordar
             ? localStorage
             : sessionStorage;
 
+        const usuario = datos.usuario || {};
+
+        const token =
+            datos.token ||
+            datos.accessToken ||
+            datos.jwt ||
+            usuario.token ||
+            usuario.accessToken ||
+            usuario.jwt;
+
         almacenamiento.setItem(
             "pettoUsuario",
-            JSON.stringify(datos.usuario)
+            JSON.stringify({
+                ...usuario,
+                ...(token ? { token: token } : {})
+            })
         );
 
         mensaje.textContent = datos.mensaje;
